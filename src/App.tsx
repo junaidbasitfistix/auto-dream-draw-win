@@ -16,6 +16,14 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ChangePassword from "./pages/ChangePassword";
 import NotFound from "./pages/NotFound";
 
+// Admin Pages
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminCarList from "./pages/admin/CarList";
+import AdminCarForm from "./pages/admin/CarForm";
+import AdminRaffleList from "./pages/admin/RaffleList";
+import AdminRaffleForm from "./pages/admin/RaffleForm";
+import AdminRaffleDetail from "./pages/admin/RaffleDetail";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -35,6 +43,17 @@ const App = () => (
           <Route path="/winners" element={<Winners />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/change-password" element={<ChangePassword />} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/cars" element={<AdminCarList />} />
+          <Route path="/admin/cars/new" element={<AdminCarForm />} />
+          <Route path="/admin/cars/edit/:id" element={<AdminCarForm />} />
+          <Route path="/admin/raffles" element={<AdminRaffleList />} />
+          <Route path="/admin/raffles/new" element={<AdminRaffleForm />} />
+          <Route path="/admin/raffles/edit/:id" element={<AdminRaffleForm />} />
+          <Route path="/admin/raffles/detail/:id" element={<AdminRaffleDetail />} />
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
