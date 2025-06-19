@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Car, Clock, Users, Star, ArrowLeft, Plus, Minus, ShoppingCart, Engine, Gauge, Settings, Fuel } from 'lucide-react';
+import { Car, Clock, Users, Star, ArrowLeft, Plus, Minus, ShoppingCart, Car as CarIcon, Gauge, Settings, Fuel } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -307,7 +306,7 @@ const CarDetail = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="space-y-4">
                   <h4 className="text-blue-400 font-semibold flex items-center">
-                    <Engine className="w-4 h-4 mr-2" />
+                    <CarIcon className="w-4 h-4 mr-2" />
                     Engine & Performance
                   </h4>
                   <div className="space-y-2">
