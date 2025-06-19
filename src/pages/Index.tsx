@@ -5,34 +5,17 @@ import { Car, Clock, Trophy, Users, Star, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import CountdownTimer from '@/components/CountdownTimer';
+import CarFilters from '@/components/CarFilters';
 
 const Index = () => {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 5,
-    hours: 12,
-    minutes: 34,
-    seconds: 56
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    carType: [],
+    priceRange: '',
+    brand: [],
+    status: []
   });
-
-  // Countdown timer effect
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 };
-        } else if (prev.minutes > 0) {
-          return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
-        } else if (prev.hours > 0) {
-          return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        } else if (prev.days > 0) {
-          return { ...prev, days: prev.days - 1, hours: 23, minutes: 59, seconds: 59 };
-        }
-        return prev;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   const featuredCars = [
     {
@@ -43,7 +26,10 @@ const Index = () => {
       entries: 1247,
       ticketPrice: "$25",
       totalTickets: 10000,
-      status: "active"
+      status: "active",
+      brand: "Lamborghini",
+      carType: "Supercar",
+      endDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000) // 5 days from now
     },
     {
       id: 2,
@@ -53,7 +39,10 @@ const Index = () => {
       entries: 892,
       ticketPrice: "$20",
       totalTickets: 8000,
-      status: "active"
+      status: "active",
+      brand: "Porsche",
+      carType: "Sports Car",
+      endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) // 3 days from now
     },
     {
       id: 3,
@@ -63,7 +52,10 @@ const Index = () => {
       entries: 2156,
       ticketPrice: "$10",
       totalTickets: 5000,
-      status: "ending-soon"
+      status: "ending-soon",
+      brand: "BMW",
+      carType: "Sports Car",
+      endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000) // 2 days from now
     }
   ];
 
@@ -72,6 +64,34 @@ const Index = () => {
     { name: "Mike R.", car: "McLaren 720S", location: "Texas", date: "Dec 10, 2024" },
     { name: "Jennifer L.", car: "Aston Martin DB11", location: "New York", date: "Dec 5, 2024" }
   ];
+
+  // Filter cars based on selected filters
+  const filteredCars = featuredCars.filter(car => {
+    const matchesCarType = filters.carType.length === 0 || filters.carType.includes(car.carType);
+    const matchesBrand = filters.brand.length === 0 || filters.brand.includes(car.brand);
+    const matchesStatus = filters.status.length === 0 || filters.status.includes(car.status === 'ending-soon' ? 'Ending Soon' : 'Active');
+    
+    let matchesPrice = true;
+    if (filters.priceRange) {
+      const carValue = parseInt(car.value.replace(/[$,]/g, ''));
+      switch (filters.priceRange) {
+        case 'Under $100k':
+          matchesPrice = carValue < 100000;
+          break;
+        case '$100k - $200k':
+          matchesPrice = carValue >= 100000 && carValue <= 200000;
+          break;
+        case '$200k - $500k':
+          matchesPrice = carValue >= 200000 && carValue <= 500000;
+          break;
+        case 'Over $500k':
+          matchesPrice = carValue > 500000;
+          break;
+      }
+    }
+    
+    return matchesCarType && matchesBrand && matchesStatus && matchesPrice;
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
@@ -84,7 +104,7 @@ const Index = () => {
           </div>
           <nav className="hidden md:flex items-center space-x-6">
             <a href="#raffles" className="text-white/80 hover:text-white transition-colors">Active Raffles</a>
-            <a href="#winners" className="text-white/80 hover:text-white transition-colors">Winners</a>
+            <Link to="/winners" className="text-white/80 hover:text-white transition-colors">Winners</Link>
             <a href="#how-it-works" className="text-white/80 hover:text-white transition-colors">How It Works</a>
           </nav>
           <div className="flex items-center space-x-4">
@@ -135,24 +155,10 @@ const Index = () => {
               <p className="text-white/80">Last chance to enter!</p>
             </div>
             
-            <div className="grid grid-cols-4 gap-4 max-w-md mx-auto mb-8">
-              <div className="bg-black/30 rounded-lg p-4 text-center">
-                <div className="text-2xl font-bold text-white">{timeLeft.days}</div>
-                <div className="text-sm text-white/60">Days</div>
-              </div>
-              <div className="bg-black/30 rounded-lg p-4 text-center">
-                <div className="text-2xl font-bold text-white">{timeLeft.hours}</div>
-                <div className="text-sm text-white/60">Hours</div>
-              </div>
-              <div className="bg-black/30 rounded-lg p-4 text-center">
-                <div className="text-2xl font-bold text-white">{timeLeft.minutes}</div>
-                <div className="text-sm text-white/60">Minutes</div>
-              </div>
-              <div className="bg-black/30 rounded-lg p-4 text-center">
-                <div className="text-2xl font-bold text-white">{timeLeft.seconds}</div>
-                <div className="text-sm text-white/60">Seconds</div>
-              </div>
-            </div>
+            <CountdownTimer 
+              endDate={featuredCars[0].endDate}
+              className="max-w-md mx-auto mb-8"
+            />
             
             <div className="text-center">
               <Link to="/car/1">
@@ -168,10 +174,29 @@ const Index = () => {
       {/* Active Raffles */}
       <section id="raffles" className="py-16 px-4">
         <div className="container mx-auto">
-          <h3 className="text-4xl font-bold text-white text-center mb-12">Active Raffles</h3>
+          <div className="flex flex-col lg:flex-row justify-between items-start mb-8">
+            <h3 className="text-4xl font-bold text-white mb-6 lg:mb-0">Active Raffles</h3>
+            <div className="w-full lg:w-auto">
+              <CarFilters 
+                onFiltersChange={setFilters}
+                isOpen={filtersOpen}
+                onToggle={() => setFiltersOpen(!filtersOpen)}
+              />
+            </div>
+          </div>
+          
+          {filtersOpen && (
+            <div className="mb-8">
+              <CarFilters 
+                onFiltersChange={setFilters}
+                isOpen={filtersOpen}
+                onToggle={() => setFiltersOpen(!filtersOpen)}
+              />
+            </div>
+          )}
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredCars.map((car) => (
+            {filteredCars.map((car) => (
               <Card key={car.id} className="bg-black/20 border-white/10 overflow-hidden group hover:scale-105 transition-transform duration-300">
                 <div className="relative">
                   <img 
@@ -196,6 +221,11 @@ const Index = () => {
                 </CardHeader>
                 
                 <CardContent className="space-y-4">
+                  <CountdownTimer 
+                    endDate={car.endDate}
+                    className="text-sm"
+                  />
+                  
                   <div className="flex justify-between text-white/80">
                     <span className="flex items-center">
                       <Users className="w-4 h-4 mr-1" />
@@ -220,13 +250,36 @@ const Index = () => {
               </Card>
             ))}
           </div>
+
+          {filteredCars.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-white/60 text-lg">No cars match your current filters.</p>
+              <Button 
+                onClick={() => {
+                  setFilters({ carType: [], priceRange: '', brand: [], status: [] });
+                  setFiltersOpen(false);
+                }}
+                variant="outline"
+                className="mt-4 text-white border-white/20"
+              >
+                Clear All Filters
+              </Button>
+            </div>
+          )}
         </div>
       </section>
 
       {/* Recent Winners */}
       <section id="winners" className="py-16 px-4 bg-black/20">
         <div className="container mx-auto">
-          <h3 className="text-4xl font-bold text-white text-center mb-12">Recent Winners</h3>
+          <div className="flex justify-between items-center mb-12">
+            <h3 className="text-4xl font-bold text-white">Recent Winners</h3>
+            <Link to="/winners">
+              <Button variant="outline" className="text-white border-white/20">
+                View All Winners
+              </Button>
+            </Link>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {recentWinners.map((winner, index) => (
