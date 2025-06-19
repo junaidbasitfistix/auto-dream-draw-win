@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
-import { Car, Clock, Trophy, Users, Star } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Car, Clock, Trophy, Users, Star, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -86,9 +87,24 @@ const Index = () => {
             <a href="#winners" className="text-white/80 hover:text-white transition-colors">Winners</a>
             <a href="#how-it-works" className="text-white/80 hover:text-white transition-colors">How It Works</a>
           </nav>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-            Sign In
-          </Button>
+          <div className="flex items-center space-x-4">
+            <Link to="/cart">
+              <Button variant="outline" size="sm" className="text-white border-white/20">
+                <ShoppingCart className="w-4 h-4 mr-2" />
+                Cart
+              </Button>
+            </Link>
+            <Link to="/profile">
+              <Button variant="outline" size="sm" className="text-white border-white/20">
+                Profile
+              </Button>
+            </Link>
+            <Link to="/signin">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                Sign In
+              </Button>
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -139,9 +155,11 @@ const Index = () => {
             </div>
             
             <div className="text-center">
-              <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8">
-                Enter Now - $25/ticket
-              </Button>
+              <Link to="/car/1">
+                <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8">
+                  Enter Now - $25/ticket
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -193,9 +211,11 @@ const Index = () => {
                     ></div>
                   </div>
                   
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                    Enter Raffle
-                  </Button>
+                  <Link to={`/car/${car.id}`}>
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                      View Details
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             ))}
