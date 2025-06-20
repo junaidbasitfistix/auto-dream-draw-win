@@ -16,7 +16,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ChangePassword from "./pages/ChangePassword";
 import NotFound from "./pages/NotFound";
 
-// Admin Pages
+// Admin Components
+import AdminLayout from "./components/AdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminCarList from "./pages/admin/CarList";
 import AdminCarForm from "./pages/admin/CarForm";
@@ -45,14 +46,16 @@ const App = () => (
           <Route path="/change-password" element={<ChangePassword />} />
           
           {/* Admin Routes */}
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/cars" element={<AdminCarList />} />
-          <Route path="/admin/cars/new" element={<AdminCarForm />} />
-          <Route path="/admin/cars/edit/:id" element={<AdminCarForm />} />
-          <Route path="/admin/raffles" element={<AdminRaffleList />} />
-          <Route path="/admin/raffles/new" element={<AdminRaffleForm />} />
-          <Route path="/admin/raffles/edit/:id" element={<AdminRaffleForm />} />
-          <Route path="/admin/raffles/detail/:id" element={<AdminRaffleDetail />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="cars" element={<AdminCarList />} />
+            <Route path="cars/new" element={<AdminCarForm />} />
+            <Route path="cars/edit/:id" element={<AdminCarForm />} />
+            <Route path="raffles" element={<AdminRaffleList />} />
+            <Route path="raffles/new" element={<AdminRaffleForm />} />
+            <Route path="raffles/edit/:id" element={<AdminRaffleForm />} />
+            <Route path="raffles/detail/:id" element={<AdminRaffleDetail />} />
+          </Route>
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

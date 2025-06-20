@@ -7,9 +7,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import CountdownTimer from '@/components/CountdownTimer';
 import CarFilters from '@/components/CarFilters';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 const Index = () => {
-  const [filtersOpen, setFiltersOpen] = useState(false);
   const [filters, setFilters] = useState({
     carType: [],
     priceRange: '',
@@ -17,11 +18,12 @@ const Index = () => {
     status: []
   });
 
+  // Extended mock data for more raffles
   const featuredCars = [
     {
       id: 1,
       name: "2024 Lamborghini Huracán",
-      image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
+      image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80",
       value: "$220,000",
       entries: 1247,
       ticketPrice: "$25",
@@ -29,12 +31,12 @@ const Index = () => {
       status: "active",
       brand: "Lamborghini",
       carType: "Supercar",
-      endDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000) // 5 days from now
+      endDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000)
     },
     {
       id: 2,
       name: "2024 Porsche 911 Turbo S",
-      image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+      image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
       value: "$180,000",
       entries: 892,
       ticketPrice: "$20",
@@ -42,12 +44,12 @@ const Index = () => {
       status: "active",
       brand: "Porsche",
       carType: "Sports Car",
-      endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) // 3 days from now
+      endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
     },
     {
       id: 3,
       name: "2024 BMW M4 Competition",
-      image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+      image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
       value: "$85,000",
       entries: 2156,
       ticketPrice: "$10",
@@ -55,7 +57,46 @@ const Index = () => {
       status: "ending-soon",
       brand: "BMW",
       carType: "Sports Car",
-      endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000) // 2 days from now
+      endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
+    },
+    {
+      id: 4,
+      name: "2024 Mercedes AMG GT",
+      image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      value: "$140,000",
+      entries: 1456,
+      ticketPrice: "$15",
+      totalTickets: 7000,
+      status: "active",
+      brand: "Mercedes",
+      carType: "Sports Car",
+      endDate: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000)
+    },
+    {
+      id: 5,
+      name: "2024 Audi R8 V10",
+      image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80",
+      value: "$190,000",
+      entries: 987,
+      ticketPrice: "$22",
+      totalTickets: 8500,
+      status: "active",
+      brand: "Audi",
+      carType: "Supercar",
+      endDate: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000)
+    },
+    {
+      id: 6,
+      name: "2024 Ferrari F8 Tributo",
+      image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+      value: "$280,000",
+      entries: 678,
+      ticketPrice: "$30",
+      totalTickets: 9000,
+      status: "active",
+      brand: "Ferrari",
+      carType: "Supercar",
+      endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     }
   ];
 
@@ -95,38 +136,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      {/* Header */}
-      <header className="bg-black/20 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Car className="w-8 h-8 text-blue-400" />
-            <h1 className="text-2xl font-bold text-white">RaffleCars</h1>
-          </div>
-          <nav className="hidden md:flex items-center space-x-6">
-            <a href="#raffles" className="text-white/80 hover:text-white transition-colors">Active Raffles</a>
-            <Link to="/winners" className="text-white/80 hover:text-white transition-colors">Winners</Link>
-            <a href="#how-it-works" className="text-white/80 hover:text-white transition-colors">How It Works</a>
-          </nav>
-          <div className="flex items-center space-x-4">
-            <Link to="/cart">
-              <Button variant="outline" size="sm" className="text-white border-white/20">
-                <ShoppingCart className="w-4 h-4 mr-2" />
-                Cart
-              </Button>
-            </Link>
-            <Link to="/profile">
-              <Button variant="outline" size="sm" className="text-white border-white/20">
-                Profile
-              </Button>
-            </Link>
-            <Link to="/signin">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                Sign In
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <section className="relative py-20 px-4">
@@ -179,33 +189,23 @@ const Index = () => {
             <div className="w-full lg:w-auto">
               <CarFilters 
                 onFiltersChange={setFilters}
-                isOpen={filtersOpen}
-                onToggle={() => setFiltersOpen(!filtersOpen)}
+                isOpen={false}
+                onToggle={() => {}}
               />
             </div>
           </div>
           
-          {filtersOpen && (
-            <div className="mb-8">
-              <CarFilters 
-                onFiltersChange={setFilters}
-                isOpen={filtersOpen}
-                onToggle={() => setFiltersOpen(!filtersOpen)}
-              />
-            </div>
-          )}
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
             {filteredCars.map((car) => (
               <Card key={car.id} className="bg-black/20 border-white/10 overflow-hidden group hover:scale-105 transition-transform duration-300">
                 <div className="relative">
                   <img 
                     src={car.image} 
                     alt={car.name}
-                    className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+                    className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-300"
                   />
                   <Badge 
-                    className={`absolute top-4 right-4 ${
+                    className={`absolute top-2 right-2 text-xs ${
                       car.status === 'ending-soon' ? 'bg-red-600' : 'bg-green-600'
                     }`}
                   >
@@ -213,36 +213,36 @@ const Index = () => {
                   </Badge>
                 </div>
                 
-                <CardHeader>
-                  <CardTitle className="text-white">{car.name}</CardTitle>
-                  <CardDescription className="text-blue-400 text-lg font-semibold">
-                    Value: {car.value}
+                <CardHeader className="p-3">
+                  <CardTitle className="text-white text-sm leading-tight">{car.name}</CardTitle>
+                  <CardDescription className="text-blue-400 text-sm font-semibold">
+                    {car.value}
                   </CardDescription>
                 </CardHeader>
                 
-                <CardContent className="space-y-4">
+                <CardContent className="p-3 pt-0 space-y-3">
                   <CountdownTimer 
                     endDate={car.endDate}
-                    className="text-sm"
+                    className="text-xs"
                   />
                   
-                  <div className="flex justify-between text-white/80">
+                  <div className="flex justify-between text-white/80 text-xs">
                     <span className="flex items-center">
-                      <Users className="w-4 h-4 mr-1" />
-                      {car.entries.toLocaleString()} entries
+                      <Users className="w-3 h-3 mr-1" />
+                      {car.entries.toLocaleString()}
                     </span>
-                    <span>{car.ticketPrice}/ticket</span>
+                    <span>{car.ticketPrice}</span>
                   </div>
                   
-                  <div className="w-full bg-gray-700 rounded-full h-2">
+                  <div className="w-full bg-gray-700 rounded-full h-1">
                     <div 
-                      className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300"
+                      className="bg-gradient-to-r from-blue-500 to-purple-500 h-1 rounded-full transition-all duration-300"
                       style={{ width: `${(car.entries / car.totalTickets) * 100}%` }}
                     ></div>
                   </div>
                   
                   <Link to={`/car/${car.id}`}>
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                    <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs">
                       View Details
                     </Button>
                   </Link>
@@ -255,10 +255,7 @@ const Index = () => {
             <div className="text-center py-12">
               <p className="text-white/60 text-lg">No cars match your current filters.</p>
               <Button 
-                onClick={() => {
-                  setFilters({ carType: [], priceRange: '', brand: [], status: [] });
-                  setFiltersOpen(false);
-                }}
+                onClick={() => setFilters({ carType: [], priceRange: '', brand: [], status: [] })}
                 variant="outline"
                 className="mt-4 text-white border-white/20"
               >
@@ -334,57 +331,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-black/40 border-t border-white/10 py-12 px-4">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <Car className="w-6 h-6 text-blue-400" />
-                <h5 className="text-lg font-bold text-white">RaffleCars</h5>
-              </div>
-              <p className="text-white/60">Your chance to win luxury cars through fair and transparent raffles.</p>
-            </div>
-            
-            <div>
-              <h6 className="font-semibold text-white mb-4">Quick Links</h6>
-              <ul className="space-y-2 text-white/60">
-                <li><a href="#" className="hover:text-white transition-colors">Active Raffles</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Past Winners</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">How It Works</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h6 className="font-semibold text-white mb-4">Support</h6>
-              <ul className="space-y-2 text-white/60">
-                <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Terms & Conditions</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h6 className="font-semibold text-white mb-4">Follow Us</h6>
-              <div className="flex space-x-4">
-                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm">f</span>
-                </div>
-                <div className="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm">t</span>
-                </div>
-                <div className="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm">i</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="border-t border-white/10 mt-8 pt-8 text-center text-white/60">
-            <p>&copy; 2024 RaffleCars. All rights reserved. | Must be 18+ to participate.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

@@ -5,6 +5,9 @@ import { Car, Trophy, Calendar, MapPin, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 const Winners = () => {
   const [selectedYear, setSelectedYear] = useState('2024');
@@ -66,28 +69,7 @@ const Winners = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      {/* Header */}
-      <header className="bg-black/20 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Link to="/" className="flex items-center space-x-2">
-              <ArrowLeft className="w-6 h-6 text-white" />
-              <span className="text-white">Back to Home</span>
-            </Link>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Car className="w-8 h-8 text-blue-400" />
-            <h1 className="text-2xl font-bold text-white">RaffleCars</h1>
-          </div>
-          <div className="flex items-center space-x-4">
-            <Link to="/signin">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                Sign In
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-12">
@@ -98,34 +80,40 @@ const Winners = () => {
           </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-8 h-[600px]">
           {/* Year Selection Sidebar */}
           <div className="lg:w-64">
-            <Card className="bg-black/20 border-white/10 sticky top-24">
+            <Card className="bg-black/20 border-white/10 h-full">
               <CardHeader>
                 <CardTitle className="text-white flex items-center">
                   <Calendar className="w-5 h-5 mr-2" />
                   Select Year
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2">
-                {years.map((year) => (
-                  <Button
-                    key={year}
-                    onClick={() => setSelectedYear(year)}
-                    variant={selectedYear === year ? "default" : "outline"}
-                    className={`w-full justify-start ${
-                      selectedYear === year 
-                        ? 'bg-blue-600 text-white' 
-                        : 'text-white border-white/20 bg-transparent hover:bg-white/10'
-                    }`}
-                  >
-                    {year}
-                    <Badge className="ml-auto bg-white/20 text-white">
-                      {winnersData[year as keyof typeof winnersData]?.length || 0}
-                    </Badge>
-                  </Button>
-                ))}
+              <CardContent className="p-0">
+                <ScrollArea className="h-[500px] px-6">
+                  <div className="space-y-2 pb-4">
+                    {years.map((year) => (
+                      <Button
+                        key={year}
+                        onClick={() => setSelectedYear(year)}
+                        variant={selectedYear === year ? "default" : "outline"}
+                        className={`w-full justify-start ${
+                          selectedYear === year 
+                            ? 'bg-blue-600 text-white' 
+                            : 'text-white border-white/20 bg-transparent hover:bg-white/10'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between w-full">
+                          <span>{year}</span>
+                          <Badge className="bg-white/20 text-white">
+                            {winnersData[year as keyof typeof winnersData]?.length || 0}
+                          </Badge>
+                        </div>
+                      </Button>
+                    ))}
+                  </div>
+                </ScrollArea>
               </CardContent>
             </Card>
           </div>
@@ -143,72 +131,80 @@ const Winners = () => {
               </p>
             </div>
 
-            <div className="space-y-6">
-              {currentWinners.map((winner, index) => (
-                <Card key={winner.id} className="bg-black/20 border-white/10 overflow-hidden">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="relative">
-                      <img 
-                        src={winner.image} 
-                        alt={winner.car}
-                        className="w-full h-48 md:h-full object-cover"
-                      />
-                      <Badge className="absolute top-4 left-4 bg-yellow-600">
-                        #{index + 1} Winner
-                      </Badge>
-                    </div>
-                    
-                    <div className="md:col-span-2 p-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div>
-                          <h4 className="text-2xl font-bold text-white mb-1">{winner.name}</h4>
-                          <p className="text-blue-400 text-lg font-semibold">{winner.car}</p>
-                          <p className="text-green-400 font-bold text-xl">{winner.value}</p>
-                        </div>
-                        <Trophy className="w-8 h-8 text-yellow-400" />
-                      </div>
-                      
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                        <div className="flex items-center text-white/80">
-                          <MapPin className="w-4 h-4 mr-2" />
-                          {winner.location}
-                        </div>
-                        <div className="flex items-center text-white/80">
-                          <Calendar className="w-4 h-4 mr-2" />
-                          {winner.date}
+            <ScrollArea className="h-[500px] pr-4">
+              <div className="space-y-6">
+                {currentWinners.map((winner, index) => (
+                  <Card key={winner.id} className="bg-gradient-to-r from-yellow-900/20 to-orange-900/20 border-yellow-500/30 overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      <div className="relative">
+                        <img 
+                          src={winner.image} 
+                          alt={winner.car}
+                          className="w-full h-48 md:h-full object-cover"
+                        />
+                        <div className="absolute top-4 left-4 flex space-x-2">
+                          <Badge className="bg-yellow-600 text-white">
+                            #{index + 1} Winner
+                          </Badge>
+                          <Badge className="bg-green-600 text-white">
+                            {winner.value}
+                          </Badge>
                         </div>
                       </div>
                       
-                      <div className="bg-white/5 rounded-lg p-4">
-                        <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div className="md:col-span-2 p-6">
+                        <div className="flex items-start justify-between mb-4">
                           <div>
-                            <span className="text-white/60">Winning Ticket:</span>
-                            <p className="text-white font-mono font-bold">{winner.ticketNumber}</p>
+                            <h4 className="text-2xl font-bold text-white mb-1">{winner.name}</h4>
+                            <p className="text-blue-400 text-lg font-semibold">{winner.car}</p>
                           </div>
-                          <div>
-                            <span className="text-white/60">Total Entries:</span>
-                            <p className="text-white font-bold">{winner.totalEntries.toLocaleString()}</p>
+                          <Trophy className="w-8 h-8 text-yellow-400" />
+                        </div>
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                          <div className="flex items-center text-white/80">
+                            <MapPin className="w-4 h-4 mr-2 text-blue-400" />
+                            {winner.location}
+                          </div>
+                          <div className="flex items-center text-white/80">
+                            <Calendar className="w-4 h-4 mr-2 text-green-400" />
+                            {winner.date}
+                          </div>
+                        </div>
+                        
+                        <div className="bg-black/20 rounded-lg p-4 border border-white/10">
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <span className="text-white/60">Winning Ticket:</span>
+                              <p className="text-yellow-400 font-mono font-bold text-lg">{winner.ticketNumber}</p>
+                            </div>
+                            <div>
+                              <span className="text-white/60">Total Entries:</span>
+                              <p className="text-white font-bold text-lg">{winner.totalEntries.toLocaleString()}</p>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
+                  </Card>
+                ))}
+              </div>
 
-            {currentWinners.length === 0 && (
-              <Card className="bg-black/20 border-white/10 text-center py-12">
-                <CardContent>
-                  <Trophy className="w-16 h-16 text-white/40 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-white mb-2">No Winners Yet</h3>
-                  <p className="text-white/60">No raffles were completed in {selectedYear}.</p>
-                </CardContent>
-              </Card>
-            )}
+              {currentWinners.length === 0 && (
+                <Card className="bg-black/20 border-white/10 text-center py-12">
+                  <CardContent>
+                    <Trophy className="w-16 h-16 text-white/40 mx-auto mb-4" />
+                    <h3 className="text-xl font-bold text-white mb-2">No Winners Yet</h3>
+                    <p className="text-white/60">No raffles were completed in {selectedYear}.</p>
+                  </CardContent>
+                </Card>
+              )}
+            </ScrollArea>
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };
