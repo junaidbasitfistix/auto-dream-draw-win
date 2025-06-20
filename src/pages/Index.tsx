@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Car, Clock, Trophy, Users, Star, ShoppingCart } from 'lucide-react';
@@ -12,10 +11,10 @@ import Footer from '@/components/Footer';
 
 const Index = () => {
   const [filters, setFilters] = useState({
-    carType: '',
-    priceRange: '',
-    brand: '',
-    status: ''
+    carType: 'all',
+    priceRange: 'all',
+    brand: 'all',
+    status: 'all'
   });
 
   // Extended mock data for more raffles - 8 cars total (2 rows of 4)
@@ -134,12 +133,12 @@ const Index = () => {
 
   // Filter cars based on selected filters
   const filteredCars = featuredCars.filter(car => {
-    const matchesCarType = !filters.carType || car.carType === filters.carType;
-    const matchesBrand = !filters.brand || car.brand === filters.brand;
-    const matchesStatus = !filters.status || (filters.status === 'Ending Soon' ? car.status === 'ending-soon' : car.status === 'active');
+    const matchesCarType = filters.carType === 'all' || car.carType === filters.carType;
+    const matchesBrand = filters.brand === 'all' || car.brand === filters.brand;
+    const matchesStatus = filters.status === 'all' || (filters.status === 'Ending Soon' ? car.status === 'ending-soon' : car.status === 'active');
     
     let matchesPrice = true;
-    if (filters.priceRange) {
+    if (filters.priceRange !== 'all') {
       const carValue = parseInt(car.value.replace(/[$,]/g, ''));
       switch (filters.priceRange) {
         case 'Under $100k':
@@ -165,36 +164,37 @@ const Index = () => {
       <Header />
 
       {/* Small Timer Section Above Hero */}
-      <section className="py-3 px-4 bg-gradient-to-r from-red-900/20 to-orange-900/20 border-b border-red-500/10">
+      <section className="py-6 px-4 bg-gradient-to-r from-red-900/20 to-orange-900/20 border-b border-red-500/10">
         <div className="container mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-center max-w-2xl mx-auto text-center">
-            <div className="mb-2 md:mb-0 md:mr-6">
-              <Badge className="bg-red-600 text-white mb-1 text-xs">Ending Soon</Badge>
-              <h3 className="text-sm font-bold text-white">2024 Lamborghini Huracán</h3>
+          <div className="flex flex-col items-center justify-center max-w-3xl mx-auto text-center">
+            <div className="mb-4">
+              <Badge className="bg-red-600 text-white mb-2 text-sm">🔥 Ending Soon</Badge>
+              <h3 className="text-xl font-bold text-white mb-2">2024 Lamborghini Huracán</h3>
+              <p className="text-white/80 text-sm">Don't miss your chance to win this incredible supercar!</p>
             </div>
             
-            <div className="flex items-center space-x-2">
-              <div className="grid grid-cols-4 gap-1">
-                <div className="bg-slate-800/50 backdrop-blur-sm rounded p-1 text-center border border-slate-700/50 min-w-[35px]">
-                  <div className="text-xs font-bold text-white">5</div>
-                  <div className="text-[10px] text-slate-300">Days</div>
+            <div className="flex items-center justify-center space-x-6">
+              <div className="grid grid-cols-4 gap-3">
+                <div className="bg-slate-800/60 backdrop-blur-sm rounded-lg p-3 text-center border border-slate-700/50 min-w-[50px]">
+                  <div className="text-lg font-bold text-white">5</div>
+                  <div className="text-xs text-slate-300">Days</div>
                 </div>
-                <div className="bg-slate-800/50 backdrop-blur-sm rounded p-1 text-center border border-slate-700/50 min-w-[35px]">
-                  <div className="text-xs font-bold text-white">12</div>
-                  <div className="text-[10px] text-slate-300">Hours</div>
+                <div className="bg-slate-800/60 backdrop-blur-sm rounded-lg p-3 text-center border border-slate-700/50 min-w-[50px]">
+                  <div className="text-lg font-bold text-white">12</div>
+                  <div className="text-xs text-slate-300">Hours</div>
                 </div>
-                <div className="bg-slate-800/50 backdrop-blur-sm rounded p-1 text-center border border-slate-700/50 min-w-[35px]">
-                  <div className="text-xs font-bold text-white">45</div>
-                  <div className="text-[10px] text-slate-300">Min</div>
+                <div className="bg-slate-800/60 backdrop-blur-sm rounded-lg p-3 text-center border border-slate-700/50 min-w-[50px]">
+                  <div className="text-lg font-bold text-white">45</div>
+                  <div className="text-xs text-slate-300">Min</div>
                 </div>
-                <div className="bg-slate-800/50 backdrop-blur-sm rounded p-1 text-center border border-slate-700/50 min-w-[35px]">
-                  <div className="text-xs font-bold text-white">23</div>
-                  <div className="text-[10px] text-slate-300">Sec</div>
+                <div className="bg-slate-800/60 backdrop-blur-sm rounded-lg p-3 text-center border border-slate-700/50 min-w-[50px]">
+                  <div className="text-lg font-bold text-white">23</div>
+                  <div className="text-xs text-slate-300">Sec</div>
                 </div>
               </div>
               
               <Link to="/car/1">
-                <Button size="sm" className="bg-red-600 hover:bg-red-700 text-white px-4 text-xs">
+                <Button className="bg-red-600 hover:bg-red-700 text-white px-6 py-3">
                   Enter Now - $25
                 </Button>
               </Link>
@@ -232,7 +232,7 @@ const Index = () => {
                 <SelectValue placeholder="Car Type" />
               </SelectTrigger>
               <SelectContent className="bg-slate-800 border-slate-700 text-white">
-                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="Supercar">Supercar</SelectItem>
                 <SelectItem value="Sports Car">Sports Car</SelectItem>
                 <SelectItem value="Luxury">Luxury</SelectItem>
@@ -244,7 +244,7 @@ const Index = () => {
                 <SelectValue placeholder="Brand" />
               </SelectTrigger>
               <SelectContent className="bg-slate-800 border-slate-700 text-white">
-                <SelectItem value="">All Brands</SelectItem>
+                <SelectItem value="all">All Brands</SelectItem>
                 <SelectItem value="Lamborghini">Lamborghini</SelectItem>
                 <SelectItem value="Ferrari">Ferrari</SelectItem>
                 <SelectItem value="McLaren">McLaren</SelectItem>
@@ -261,7 +261,7 @@ const Index = () => {
                 <SelectValue placeholder="Price Range" />
               </SelectTrigger>
               <SelectContent className="bg-slate-800 border-slate-700 text-white">
-                <SelectItem value="">All Prices</SelectItem>
+                <SelectItem value="all">All Prices</SelectItem>
                 <SelectItem value="Under $100k">Under $100k</SelectItem>
                 <SelectItem value="$100k - $200k">$100k - $200k</SelectItem>
                 <SelectItem value="$200k - $500k">$200k - $500k</SelectItem>
@@ -274,7 +274,7 @@ const Index = () => {
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent className="bg-slate-800 border-slate-700 text-white">
-                <SelectItem value="">All Status</SelectItem>
+                <SelectItem value="all">All Status</SelectItem>
                 <SelectItem value="Active">Active</SelectItem>
                 <SelectItem value="Ending Soon">Ending Soon</SelectItem>
               </SelectContent>
@@ -355,7 +355,7 @@ const Index = () => {
             <div className="text-center py-12">
               <p className="text-white/60 text-lg">No cars match your current filters.</p>
               <Button 
-                onClick={() => setFilters({ carType: '', priceRange: '', brand: '', status: '' })}
+                onClick={() => setFilters({ carType: 'all', priceRange: 'all', brand: 'all', status: 'all' })}
                 variant="outline"
                 className="mt-4 text-white border-white/20"
               >
