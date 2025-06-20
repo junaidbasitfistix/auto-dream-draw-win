@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Car, Clock, Users, Star, ArrowLeft, Plus, Minus, ShoppingCart, Car as CarIcon, Gauge, Settings, Fuel, Trophy } from 'lucide-react';
@@ -6,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import CountdownTimer from '@/components/CountdownTimer';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -96,15 +95,17 @@ const CarDetail = () => {
       car: "2023 Lamborghini Huracán",
       location: "Miami, FL",
       date: "Nov 2024",
-      image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+      image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      testimonial: "Absolutely incredible experience! The car exceeded all my expectations."
     },
     {
       id: 2,
       name: "Jessica T.",
       car: "2022 Lamborghini Huracán",
-      location: "Los Angeles, CA",
+      location: "Los Angeles, CA", 
       date: "Aug 2024",
-      image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+      image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      testimonial: "A dream come true! Thank you RaffleCars for this amazing opportunity."
     }
   ];
 
@@ -125,8 +126,9 @@ const CarDetail = () => {
 
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Car Images Carousel */}
+          {/* Car Images Section */}
           <div className="space-y-4">
+            {/* Main Carousel */}
             <Carousel className="w-full">
               <CarouselContent>
                 {car.images.map((image, index) => (
@@ -159,7 +161,7 @@ const CarDetail = () => {
                   key={index}
                   src={image} 
                   alt={`${car.name} ${index + 1}`}
-                  className="w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
+                  className="w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-opacity border-2 border-transparent hover:border-blue-400"
                 />
               ))}
             </div>
@@ -174,21 +176,38 @@ const CarDetail = () => {
 
             {/* Countdown Timer - Smaller */}
             <Card className="bg-red-900/30 border-red-500/20">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-white flex items-center text-lg">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-white flex items-center text-sm">
                   <Clock className="w-4 h-4 mr-2" />
                   Time Remaining
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
-                <CountdownTimer endDate={car.endDate} className="text-sm" />
+                <div className="grid grid-cols-4 gap-2">
+                  <div className="bg-slate-800/50 rounded p-2 text-center">
+                    <div className="text-sm font-bold text-white">5</div>
+                    <div className="text-xs text-slate-300">Days</div>
+                  </div>
+                  <div className="bg-slate-800/50 rounded p-2 text-center">
+                    <div className="text-sm font-bold text-white">12</div>
+                    <div className="text-xs text-slate-300">Hours</div>
+                  </div>
+                  <div className="bg-slate-800/50 rounded p-2 text-center">
+                    <div className="text-sm font-bold text-white">45</div>
+                    <div className="text-xs text-slate-300">Minutes</div>
+                  </div>
+                  <div className="bg-slate-800/50 rounded p-2 text-center">
+                    <div className="text-sm font-bold text-white">23</div>
+                    <div className="text-xs text-slate-300">Seconds</div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
-            {/* Entry Statistics */}
+            {/* Entry Statistics - Smaller */}
             <Card className="bg-black/20 border-white/10">
-              <CardContent className="pt-6">
-                <div className="flex justify-between text-white/80 mb-4">
+              <CardContent className="pt-4 pb-4">
+                <div className="flex justify-between text-white/80 mb-3 text-sm">
                   <span className="flex items-center">
                     <Users className="w-4 h-4 mr-1" />
                     {car.entries.toLocaleString()} entries
@@ -196,49 +215,49 @@ const CarDetail = () => {
                   <span>${car.ticketPrice}/ticket</span>
                 </div>
                 
-                <div className="w-full bg-gray-700 rounded-full h-3 mb-4">
+                <div className="w-full bg-gray-700 rounded-full h-2 mb-3">
                   <div 
-                    className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full"
+                    className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full"
                     style={{ width: `${(car.entries / car.totalTickets) * 100}%` }}
                   ></div>
                 </div>
                 
-                <p className="text-white/60 text-sm">
+                <p className="text-white/60 text-xs">
                   {car.totalTickets - car.entries} tickets remaining
                 </p>
               </CardContent>
             </Card>
 
-            {/* Ticket Selection */}
+            {/* Ticket Selection - Smaller */}
             <Card className="bg-black/20 border-white/10">
-              <CardHeader>
-                <CardTitle className="text-white">Select Tickets</CardTitle>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-white text-sm">Select Tickets</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3 pt-0">
                 <div className="flex items-center justify-between">
-                  <span className="text-white">Quantity:</span>
-                  <div className="flex items-center space-x-3">
+                  <span className="text-white text-sm">Quantity:</span>
+                  <div className="flex items-center space-x-2">
                     <Button 
                       variant="outline" 
                       size="sm" 
                       onClick={() => adjustQuantity(-1)}
-                      className="text-white border-white/20"
+                      className="text-white border-white/20 h-8 w-8 p-0"
                     >
-                      <Minus className="w-4 h-4" />
+                      <Minus className="w-3 h-3" />
                     </Button>
-                    <span className="text-xl font-bold text-white px-4">{quantity}</span>
+                    <span className="text-lg font-bold text-white px-3">{quantity}</span>
                     <Button 
                       variant="outline" 
                       size="sm" 
                       onClick={() => adjustQuantity(1)}
-                      className="text-white border-white/20"
+                      className="text-white border-white/20 h-8 w-8 p-0"
                     >
-                      <Plus className="w-4 h-4" />
+                      <Plus className="w-3 h-3" />
                     </Button>
                   </div>
                 </div>
                 
-                <div className="flex justify-between text-lg">
+                <div className="flex justify-between text-base">
                   <span className="text-white">Total:</span>
                   <span className="text-blue-400 font-bold">${car.ticketPrice * quantity}</span>
                 </div>
@@ -391,7 +410,7 @@ const CarDetail = () => {
           </Card>
         </div>
 
-        {/* Car Winners Section */}
+        {/* Car Winners Section - Fancy and Beautiful */}
         <div className="mt-12">
           <h3 className="text-3xl font-bold text-white mb-8 flex items-center">
             <Trophy className="w-8 h-8 mr-3 text-yellow-400" />
@@ -399,21 +418,39 @@ const CarDetail = () => {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {carWinners.map((winner) => (
-              <Card key={winner.id} className="bg-gradient-to-r from-yellow-900/20 to-orange-900/20 border-yellow-500/30">
-                <div className="flex items-center space-x-4 p-6">
+              <Card key={winner.id} className="bg-gradient-to-br from-yellow-600/10 via-orange-600/10 to-red-600/10 border border-yellow-500/30 backdrop-blur-sm hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-yellow-500/20 overflow-hidden">
+                <div className="relative">
                   <img 
                     src={winner.image} 
                     alt={winner.car}
-                    className="w-20 h-20 object-cover rounded-lg"
+                    className="w-full h-48 object-cover"
                   />
-                  <div className="flex-1">
-                    <h4 className="text-xl font-bold text-white">{winner.name}</h4>
-                    <p className="text-yellow-400 font-semibold">{winner.car}</p>
-                    <p className="text-white/70">{winner.location}</p>
-                    <p className="text-white/60 text-sm">{winner.date}</p>
-                  </div>
-                  <Trophy className="w-6 h-6 text-yellow-400" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                  <Trophy className="absolute top-4 right-4 w-8 h-8 text-yellow-400 drop-shadow-lg" />
+                  <Badge className="absolute top-4 left-4 bg-gradient-to-r from-yellow-600 to-orange-600 text-white">
+                    🏆 Winner
+                  </Badge>
                 </div>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h4 className="text-xl font-bold bg-gradient-to-r from-white to-yellow-200 bg-clip-text text-transparent">{winner.name}</h4>
+                      <p className="text-yellow-400 font-semibold">{winner.car}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-white/70 text-sm">{winner.location}</p>
+                      <p className="text-white/60 text-xs">{winner.date}</p>
+                    </div>
+                  </div>
+                  <div className="bg-slate-800/40 rounded-lg p-4 border border-yellow-500/20">
+                    <p className="text-white/80 italic text-sm">"{winner.testimonial}"</p>
+                  </div>
+                  <div className="mt-4 flex justify-center">
+                    <div className="px-4 py-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-full">
+                      <span className="text-yellow-400 text-sm font-medium">🎉 Verified Winner</span>
+                    </div>
+                  </div>
+                </CardContent>
               </Card>
             ))}
           </div>

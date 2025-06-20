@@ -24,6 +24,7 @@ import AdminCarForm from "./pages/admin/CarForm";
 import AdminRaffleList from "./pages/admin/RaffleList";
 import AdminRaffleForm from "./pages/admin/RaffleForm";
 import AdminRaffleDetail from "./pages/admin/RaffleDetail";
+import WinnerManagement from "./pages/admin/WinnerManagement";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +56,7 @@ const App = () => (
             <Route path="raffles/new" element={<AdminRaffleForm />} />
             <Route path="raffles/edit/:id" element={<AdminRaffleForm />} />
             <Route path="raffles/detail/:id" element={<AdminRaffleDetail />} />
+            <Route path="winners" element={<WinnerManagement />} />
           </Route>
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

@@ -36,9 +36,9 @@ const AdminLayout = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-gray-50 flex w-full">
       {/* Sidebar */}
-      <div className={`${sidebarOpen ? 'w-64' : 'w-16'} transition-all duration-300 bg-white shadow-lg border-r`}>
+      <div className={`${sidebarOpen ? 'w-64' : 'w-16'} transition-all duration-300 bg-white shadow-lg border-r flex-shrink-0`}>
         <div className="p-4">
           <div className="flex items-center justify-between">
             <div className={`flex items-center space-x-2 ${!sidebarOpen && 'justify-center'}`}>
@@ -101,8 +101,8 @@ const AdminLayout = () => {
         )}
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto">
+      {/* Main Content - Full Width */}
+      <div className="flex-1 overflow-auto w-full">
         <Outlet />
       </div>
     </div>

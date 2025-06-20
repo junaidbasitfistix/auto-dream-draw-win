@@ -73,20 +73,26 @@ const Winners = () => {
 
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-12">
-          <Trophy className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
-          <h2 className="text-4xl font-bold text-white mb-4">Past Winners</h2>
+          <div className="relative inline-block mb-6">
+            <Trophy className="w-16 h-16 text-yellow-400 mx-auto drop-shadow-2xl" />
+            <div className="absolute inset-0 w-16 h-16 bg-yellow-400/20 blur-xl rounded-full mx-auto"></div>
+          </div>
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent mb-4">
+            Hall of Fame
+          </h2>
           <p className="text-white/80 max-w-2xl mx-auto">
-            Congratulations to all our lucky winners! See who has driven away with their dream cars.
+            Celebrating our lucky winners who turned their dreams into reality. 
+            See who has driven away with their dream cars.
           </p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8 h-[600px]">
           {/* Year Selection Sidebar */}
           <div className="lg:w-64">
-            <Card className="bg-black/20 border-white/10 h-full">
+            <Card className="bg-slate-800/40 backdrop-blur-sm border-slate-700/50 h-full">
               <CardHeader>
                 <CardTitle className="text-white flex items-center">
-                  <Calendar className="w-5 h-5 mr-2" />
+                  <Calendar className="w-5 h-5 mr-2 text-blue-400" />
                   Select Year
                 </CardTitle>
               </CardHeader>
@@ -98,15 +104,15 @@ const Winners = () => {
                         key={year}
                         onClick={() => setSelectedYear(year)}
                         variant={selectedYear === year ? "default" : "outline"}
-                        className={`w-full justify-start ${
+                        className={`w-full justify-start transition-all ${
                           selectedYear === year 
-                            ? 'bg-blue-600 text-white' 
-                            : 'text-white border-white/20 bg-transparent hover:bg-white/10'
+                            ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' 
+                            : 'text-white border-slate-600 bg-slate-800/20 hover:bg-slate-700/40 hover:border-slate-500'
                         }`}
                       >
                         <div className="flex items-center justify-between w-full">
                           <span>{year}</span>
-                          <Badge className="bg-white/20 text-white">
+                          <Badge className={selectedYear === year ? "bg-white/20 text-white" : "bg-blue-600/20 text-blue-400"}>
                             {winnersData[year as keyof typeof winnersData]?.length || 0}
                           </Badge>
                         </div>
@@ -125,16 +131,18 @@ const Winners = () => {
                 {selectedYear} Winners ({currentWinners.length})
               </h3>
               <p className="text-white/60">
-                Total prize value distributed: ${currentWinners.reduce((sum, winner) => 
-                  sum + parseInt(winner.value.replace(/[$,]/g, '')), 0
-                ).toLocaleString()}
+                Total prize value distributed: <span className="text-green-400 font-semibold">
+                  ${currentWinners.reduce((sum, winner) => 
+                    sum + parseInt(winner.value.replace(/[$,]/g, '')), 0
+                  ).toLocaleString()}
+                </span>
               </p>
             </div>
 
             <ScrollArea className="h-[500px] pr-4">
               <div className="space-y-6">
                 {currentWinners.map((winner, index) => (
-                  <Card key={winner.id} className="bg-gradient-to-r from-yellow-900/20 to-orange-900/20 border-yellow-500/30 overflow-hidden hover:shadow-xl transition-all duration-300">
+                  <Card key={winner.id} className="bg-gradient-to-r from-slate-800/60 via-blue-900/20 to-purple-900/20 border-yellow-500/30 backdrop-blur-sm overflow-hidden hover:shadow-xl hover:shadow-yellow-500/20 transition-all duration-300 hover:scale-[1.02]">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       <div className="relative">
                         <img 
@@ -142,37 +150,42 @@ const Winners = () => {
                           alt={winner.car}
                           className="w-full h-48 md:h-full object-cover"
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                         <div className="absolute top-4 left-4 flex space-x-2">
-                          <Badge className="bg-yellow-600 text-white">
-                            #{index + 1} Winner
+                          <Badge className="bg-gradient-to-r from-yellow-600 to-orange-600 text-white shadow-lg">
+                            🏆 #{index + 1} Winner
                           </Badge>
-                          <Badge className="bg-green-600 text-white">
+                          <Badge className="bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg">
                             {winner.value}
                           </Badge>
                         </div>
+                        <Trophy className="absolute bottom-4 right-4 w-8 h-8 text-yellow-400 drop-shadow-lg" />
                       </div>
                       
                       <div className="md:col-span-2 p-6">
                         <div className="flex items-start justify-between mb-4">
                           <div>
-                            <h4 className="text-2xl font-bold text-white mb-1">{winner.name}</h4>
+                            <h4 className="text-2xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-1">{winner.name}</h4>
                             <p className="text-blue-400 text-lg font-semibold">{winner.car}</p>
                           </div>
-                          <Trophy className="w-8 h-8 text-yellow-400" />
+                          <div className="text-right">
+                            <div className="text-yellow-400 text-sm font-medium">WINNER</div>
+                            <div className="text-white/60 text-xs">{winner.date}</div>
+                          </div>
                         </div>
                         
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                          <div className="flex items-center text-white/80">
+                          <div className="flex items-center text-white/80 bg-slate-800/40 rounded-lg p-3">
                             <MapPin className="w-4 h-4 mr-2 text-blue-400" />
                             {winner.location}
                           </div>
-                          <div className="flex items-center text-white/80">
+                          <div className="flex items-center text-white/80 bg-slate-800/40 rounded-lg p-3">
                             <Calendar className="w-4 h-4 mr-2 text-green-400" />
                             {winner.date}
                           </div>
                         </div>
                         
-                        <div className="bg-black/20 rounded-lg p-4 border border-white/10">
+                        <div className="bg-gradient-to-r from-slate-800/60 to-slate-700/60 rounded-lg p-4 border border-yellow-500/20">
                           <div className="grid grid-cols-2 gap-4 text-sm">
                             <div>
                               <span className="text-white/60">Winning Ticket:</span>
@@ -191,7 +204,7 @@ const Winners = () => {
               </div>
 
               {currentWinners.length === 0 && (
-                <Card className="bg-black/20 border-white/10 text-center py-12">
+                <Card className="bg-slate-800/40 backdrop-blur-sm border-slate-700/50 text-center py-12">
                   <CardContent>
                     <Trophy className="w-16 h-16 text-white/40 mx-auto mb-4" />
                     <h3 className="text-xl font-bold text-white mb-2">No Winners Yet</h3>

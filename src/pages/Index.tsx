@@ -17,8 +17,9 @@ const Index = () => {
     brand: [],
     status: []
   });
+  const [showFilters, setShowFilters] = useState(false);
 
-  // Extended mock data for more raffles
+  // Extended mock data for more raffles - 8 cars total (2 rows of 4)
   const featuredCars = [
     {
       id: 1,
@@ -97,13 +98,39 @@ const Index = () => {
       brand: "Ferrari",
       carType: "Supercar",
       endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+    },
+    {
+      id: 7,
+      name: "2024 McLaren 720S",
+      image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+      value: "$310,000",
+      entries: 543,
+      ticketPrice: "$35",
+      totalTickets: 7500,
+      status: "active",
+      brand: "McLaren",
+      carType: "Supercar",
+      endDate: new Date(Date.now() + 8 * 24 * 60 * 60 * 1000)
+    },
+    {
+      id: 8,
+      name: "2024 Aston Martin DB12",
+      image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      value: "$250,000",
+      entries: 721,
+      ticketPrice: "$28",
+      totalTickets: 6800,
+      status: "active",
+      brand: "Aston Martin",
+      carType: "Luxury",
+      endDate: new Date(Date.now() + 9 * 24 * 60 * 60 * 1000)
     }
   ];
 
   const recentWinners = [
-    { name: "Sarah M.", car: "Ferrari F8 Tributo", location: "California", date: "Dec 15, 2024" },
-    { name: "Mike R.", car: "McLaren 720S", location: "Texas", date: "Dec 10, 2024" },
-    { name: "Jennifer L.", car: "Aston Martin DB11", location: "New York", date: "Dec 5, 2024" }
+    { name: "Sarah M.", car: "Ferrari F8 Tributo", location: "California", date: "Dec 15, 2024", image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" },
+    { name: "Mike R.", car: "McLaren 720S", location: "Texas", date: "Dec 10, 2024", image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" },
+    { name: "Jennifer L.", car: "Aston Martin DB11", location: "New York", date: "Dec 5, 2024", image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" }
   ];
 
   // Filter cars based on selected filters
@@ -155,20 +182,36 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Featured Countdown */}
-      <section className="py-16 px-4">
+      {/* Featured Countdown - Smaller */}
+      <section className="py-8 px-4">
         <div className="container mx-auto">
-          <div className="bg-gradient-to-r from-red-900/30 to-orange-900/30 rounded-2xl p-8 border border-red-500/20">
-            <div className="text-center mb-8">
-              <Badge className="bg-red-600 text-white mb-4">Ending Soon</Badge>
-              <h3 className="text-3xl font-bold text-white mb-2">2024 Lamborghini Huracán</h3>
+          <div className="bg-gradient-to-r from-red-900/30 to-orange-900/30 rounded-2xl p-6 border border-red-500/20 max-w-4xl mx-auto">
+            <div className="text-center mb-6">
+              <Badge className="bg-red-600 text-white mb-3">Ending Soon</Badge>
+              <h3 className="text-2xl font-bold text-white mb-2">2024 Lamborghini Huracán</h3>
               <p className="text-white/80">Last chance to enter!</p>
             </div>
             
-            <CountdownTimer 
-              endDate={featuredCars[0].endDate}
-              className="max-w-md mx-auto mb-8"
-            />
+            <div className="max-w-md mx-auto mb-6">
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-2 text-center border border-slate-700/50">
+                  <div className="text-lg font-bold text-white">5</div>
+                  <div className="text-xs text-slate-300">Days</div>
+                </div>
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-2 text-center border border-slate-700/50">
+                  <div className="text-lg font-bold text-white">12</div>
+                  <div className="text-xs text-slate-300">Hours</div>
+                </div>
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-2 text-center border border-slate-700/50">
+                  <div className="text-lg font-bold text-white">45</div>
+                  <div className="text-xs text-slate-300">Minutes</div>
+                </div>
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-2 text-center border border-slate-700/50">
+                  <div className="text-lg font-bold text-white">23</div>
+                  <div className="text-xs text-slate-300">Seconds</div>
+                </div>
+              </div>
+            </div>
             
             <div className="text-center">
               <Link to="/car/1">
@@ -189,15 +232,15 @@ const Index = () => {
             <div className="w-full lg:w-auto">
               <CarFilters 
                 onFiltersChange={setFilters}
-                isOpen={false}
-                onToggle={() => {}}
+                isOpen={showFilters}
+                onToggle={() => setShowFilters(!showFilters)}
               />
             </div>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {filteredCars.map((car) => (
-              <Card key={car.id} className="bg-black/20 border-white/10 overflow-hidden group hover:scale-105 transition-transform duration-300">
+              <Card key={car.id} className="bg-slate-800/40 backdrop-blur-sm border-slate-700/50 overflow-hidden group hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20">
                 <div className="relative">
                   <img 
                     src={car.image} 
@@ -221,10 +264,24 @@ const Index = () => {
                 </CardHeader>
                 
                 <CardContent className="p-3 pt-0 space-y-3">
-                  <CountdownTimer 
-                    endDate={car.endDate}
-                    className="text-xs"
-                  />
+                  <div className="grid grid-cols-4 gap-1">
+                    <div className="bg-slate-800/50 rounded p-1 text-center">
+                      <div className="text-xs font-bold text-white">5</div>
+                      <div className="text-[10px] text-slate-300">Days</div>
+                    </div>
+                    <div className="bg-slate-800/50 rounded p-1 text-center">
+                      <div className="text-xs font-bold text-white">12</div>
+                      <div className="text-[10px] text-slate-300">Hours</div>
+                    </div>
+                    <div className="bg-slate-800/50 rounded p-1 text-center">
+                      <div className="text-xs font-bold text-white">45</div>
+                      <div className="text-[10px] text-slate-300">Minutes</div>
+                    </div>
+                    <div className="bg-slate-800/50 rounded p-1 text-center">
+                      <div className="text-xs font-bold text-white">23</div>
+                      <div className="text-[10px] text-slate-300">Seconds</div>
+                    </div>
+                  </div>
                   
                   <div className="flex justify-between text-white/80 text-xs">
                     <span className="flex items-center">
@@ -234,7 +291,7 @@ const Index = () => {
                     <span>{car.ticketPrice}</span>
                   </div>
                   
-                  <div className="w-full bg-gray-700 rounded-full h-1">
+                  <div className="w-full bg-slate-700 rounded-full h-1">
                     <div 
                       className="bg-gradient-to-r from-blue-500 to-purple-500 h-1 rounded-full transition-all duration-300"
                       style={{ width: `${(car.entries / car.totalTickets) * 100}%` }}
@@ -266,13 +323,13 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Recent Winners */}
-      <section id="winners" className="py-16 px-4 bg-black/20">
+      {/* Recent Winners - Fancy Theme */}
+      <section id="winners" className="py-16 px-4 bg-gradient-to-r from-slate-900/50 via-blue-900/20 to-purple-900/20">
         <div className="container mx-auto">
           <div className="flex justify-between items-center mb-12">
             <h3 className="text-4xl font-bold text-white">Recent Winners</h3>
             <Link to="/winners">
-              <Button variant="outline" className="text-white border-white/20">
+              <Button variant="outline" className="text-white border-white/20 bg-gradient-to-r from-blue-600/20 to-purple-600/20 hover:from-blue-600/40 hover:to-purple-600/40">
                 View All Winners
               </Button>
             </Link>
@@ -280,17 +337,28 @@ const Index = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {recentWinners.map((winner, index) => (
-              <Card key={index} className="bg-gradient-to-br from-yellow-900/30 to-orange-900/30 border-yellow-500/20">
-                <CardHeader className="text-center">
-                  <Trophy className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
-                  <CardTitle className="text-white">{winner.name}</CardTitle>
-                  <CardDescription className="text-yellow-400 font-semibold">
+              <Card key={index} className="bg-gradient-to-br from-yellow-600/10 via-orange-600/10 to-red-600/10 border border-yellow-500/30 backdrop-blur-sm hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-yellow-500/20">
+                <div className="relative">
+                  <img 
+                    src={winner.image} 
+                    alt={winner.car}
+                    className="w-full h-32 object-cover rounded-t-lg"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent rounded-t-lg" />
+                  <Trophy className="absolute top-4 right-4 w-8 h-8 text-yellow-400 drop-shadow-lg" />
+                </div>
+                <CardHeader className="text-center pb-2">
+                  <CardTitle className="text-white text-lg">{winner.name}</CardTitle>
+                  <CardDescription className="text-yellow-400 font-semibold text-base">
                     Won: {winner.car}
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-white/80">{winner.location}</p>
+                <CardContent className="text-center pt-0">
+                  <p className="text-white/80 mb-1">{winner.location}</p>
                   <p className="text-sm text-white/60">{winner.date}</p>
+                  <div className="mt-3 px-3 py-1 bg-yellow-500/20 rounded-full">
+                    <span className="text-yellow-400 text-xs font-medium">🎉 Congratulations!</span>
+                  </div>
                 </CardContent>
               </Card>
             ))}
