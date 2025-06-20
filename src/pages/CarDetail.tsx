@@ -92,7 +92,14 @@ const CarDetail = () => {
       image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
       value: "$140,000",
       ticketPrice: 15
-    }
+    },
+    {
+      id: 5,
+      name: "2022 Porsche 911 Turbo",
+      image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+      value: "$280,000",
+      ticketPrice: 17
+    },
   ];
 
   // Mock car winners data
@@ -110,7 +117,7 @@ const CarDetail = () => {
       id: 2,
       name: "Jessica T.",
       car: "2022 Lamborghini Huracán",
-      location: "Los Angeles, CA", 
+      location: "Los Angeles, CA",
       date: "Aug 2024",
       image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
       testimonial: "A dream come true! Thank you RaffleCars for this amazing opportunity."
@@ -151,15 +158,14 @@ const CarDetail = () => {
                 {car.images.map((image, index) => (
                   <CarouselItem key={index}>
                     <div className="relative">
-                      <img 
-                        src={image} 
+                      <img
+                        src={image}
                         alt={`${car.name} ${index + 1}`}
                         className="w-full h-96 object-cover rounded-2xl"
                       />
-                      <Badge 
-                        className={`absolute top-4 right-4 ${
-                          car.status === 'ending-soon' ? 'bg-red-600' : 'bg-green-600'
-                        }`}
+                      <Badge
+                        className={`absolute top-4 right-4 ${car.status === 'ending-soon' ? 'bg-red-600' : 'bg-green-600'
+                          }`}
                       >
                         {car.status === 'ending-soon' ? 'Ending Soon' : 'Active'}
                       </Badge>
@@ -174,9 +180,9 @@ const CarDetail = () => {
             {/* All Images Grid */}
             <div className="grid grid-cols-5 gap-2">
               {car.images.map((image, index) => (
-                <img 
+                <img
                   key={index}
-                  src={image} 
+                  src={image}
                   alt={`${car.name} ${index + 1}`}
                   className="w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-opacity border-2 border-transparent hover:border-blue-400"
                 />
@@ -233,14 +239,14 @@ const CarDetail = () => {
                     </span>
                     <span>${car.ticketPrice}/ticket</span>
                   </div>
-                  
+
                   <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
-                    <div 
+                    <div
                       className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full"
                       style={{ width: `${(car.entries / car.totalTickets) * 100}%` }}
                     ></div>
                   </div>
-                  
+
                   <p className="text-white/60 text-xs">
                     {car.totalTickets - car.entries} tickets remaining
                   </p>
@@ -257,18 +263,18 @@ const CarDetail = () => {
                 <div className="flex items-center justify-between">
                   <span className="text-white text-sm">Quantity:</span>
                   <div className="flex items-center space-x-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
+                    <Button
+                      variant="outline"
+                      size="sm"
                       onClick={() => adjustQuantity(-1)}
                       className="text-white border-white/20 h-8 w-8 p-0"
                     >
                       <Minus className="w-3 h-3" />
                     </Button>
                     <span className="text-lg font-bold text-white px-3">{quantity}</span>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
+                    <Button
+                      variant="outline"
+                      size="sm"
                       onClick={() => adjustQuantity(1)}
                       className="text-white border-white/20 h-8 w-8 p-0"
                     >
@@ -276,13 +282,13 @@ const CarDetail = () => {
                     </Button>
                   </div>
                 </div>
-                
+
                 <div className="flex justify-between text-base">
                   <span className="text-white">Total:</span>
                   <span className="text-blue-400 font-bold">${car.ticketPrice * quantity}</span>
                 </div>
-                
-                <Button 
+
+                <Button
                   onClick={handleAddToCart}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white"
                 >
@@ -431,41 +437,42 @@ const CarDetail = () => {
         <div className="mt-12">
           <h3 className="text-3xl font-bold text-white mb-8 flex items-center">
             <Trophy className="w-8 h-8 mr-3 text-yellow-400" />
-            Previous Winners of This Car Model
+            {/* Previous Winners of This Car Model */}
+            Latest Winners
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {carWinners.map((winner) => (
-              <Card key={winner.id} className="bg-gradient-to-br from-yellow-600/10 via-orange-600/10 to-red-600/10 border border-yellow-500/30 backdrop-blur-sm hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-yellow-500/20 overflow-hidden">
+            {carWinners?.map((winner, index) => (
+              <Card key={index} className="bg-slate-800/40 backdrop-blur-sm border-slate-700/50 overflow-hidden group hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-yellow-500/20">
                 <div className="relative">
-                  <img 
-                    src={winner.image} 
+                  <img
+                    src={winner.image}
                     alt={winner.car}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-300"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                  <Trophy className="absolute top-4 right-4 w-8 h-8 text-yellow-400 drop-shadow-lg" />
-                  <Badge className="absolute top-4 left-4 bg-gradient-to-r from-yellow-600 to-orange-600 text-white">
+                  <Badge className="absolute top-2 right-2 bg-yellow-600 text-white text-xs">
                     🏆 Winner
                   </Badge>
                 </div>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <h4 className="text-xl font-bold text-white">{winner.name}</h4>
-                      <p className="text-yellow-400 font-semibold text-sm">{winner.car}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-white text-sm">{winner.location}</p>
-                      <p className="text-white/80 text-xs">{winner.date}</p>
-                    </div>
+
+                <CardHeader className="p-3">
+                  <CardTitle className="text-white text-sm leading-tight">{winner.name}</CardTitle>
+                  <CardDescription className="text-yellow-400 text-sm font-semibold">
+                    Won: {winner.car}
+                  </CardDescription>
+                </CardHeader>
+
+                <CardContent className="p-3 pt-0 space-y-2">
+                  <div className="flex justify-between text-white text-xs font-medium">
+                    <span>{winner.location}</span>
+                    <span>{winner.date}</span>
                   </div>
-                  <div className="bg-slate-800/40 rounded-lg p-4 border border-yellow-500/20">
-                    <p className="text-white italic text-sm">"{winner.testimonial}"</p>
+
+                  <div className="w-full bg-yellow-500/20 rounded-full h-1">
+                    <div className="bg-gradient-to-r from-yellow-500 to-orange-500 h-1 rounded-full w-full"></div>
                   </div>
-                  <div className="mt-4 flex justify-center">
-                    <div className="px-4 py-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-full">
-                      <span className="text-yellow-400 text-sm font-medium">🎉 Verified Winner</span>
-                    </div>
+
+                  <div className="text-center">
+                    <span className="text-yellow-400 text-xs font-medium">🎉 Verified Winner!</span>
                   </div>
                 </CardContent>
               </Card>
@@ -482,20 +489,20 @@ const CarDetail = () => {
                 <Link key={similarCar.id} to={`/car/${similarCar.id}`} className="flex-shrink-0 w-80">
                   <Card className="bg-black/20 border-white/10 overflow-hidden group hover:scale-105 transition-transform duration-300 w-full">
                     <div className="relative">
-                      <img 
-                        src={similarCar.image} 
+                      <img
+                        src={similarCar.image}
                         alt={similarCar.name}
                         className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
                       />
                     </div>
-                    
+
                     <CardHeader>
                       <CardTitle className="text-white text-lg">{similarCar.name}</CardTitle>
                       <CardDescription className="text-blue-400 text-lg font-semibold">
                         Value: {similarCar.value}
                       </CardDescription>
                     </CardHeader>
-                    
+
                     <CardContent>
                       <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                         View Details - ${similarCar.ticketPrice}/ticket

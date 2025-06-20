@@ -136,7 +136,7 @@ const Index = () => {
     const matchesCarType = filters.carType === 'all' || car.carType === filters.carType;
     const matchesBrand = filters.brand === 'all' || car.brand === filters.brand;
     const matchesStatus = filters.status === 'all' || (filters.status === 'Ending Soon' ? car.status === 'ending-soon' : car.status === 'active');
-    
+
     let matchesPrice = true;
     if (filters.priceRange !== 'all') {
       const carValue = parseInt(car.value.replace(/[$,]/g, ''));
@@ -155,7 +155,7 @@ const Index = () => {
           break;
       }
     }
-    
+
     return matchesCarType && matchesBrand && matchesStatus && matchesPrice;
   });
 
@@ -169,10 +169,10 @@ const Index = () => {
           <div className="flex flex-col items-center justify-center max-w-3xl mx-auto text-center">
             <div className="mb-4">
               <Badge className="bg-red-600 text-white mb-2 text-sm">🔥 Ending Soon</Badge>
-              <h3 className="text-xl font-bold text-white mb-2">2024 Lamborghini Huracán</h3>
-              <p className="text-white/80 text-sm">Don't miss your chance to win this incredible supercar!</p>
+              {/* <h3 className="text-xl font-bold text-white mb-2">2024 Lamborghini Huracán</h3> */}
+              {/* <p className="text-white/80 text-sm">Don't miss your chance to win this incredible supercar!</p> */}
             </div>
-            
+
             <div className="flex items-center justify-center space-x-6">
               <div className="grid grid-cols-4 gap-3">
                 <div className="bg-slate-800/60 backdrop-blur-sm rounded-lg p-3 text-center border border-slate-700/50 min-w-[50px]">
@@ -192,12 +192,12 @@ const Index = () => {
                   <div className="text-xs text-slate-300">Sec</div>
                 </div>
               </div>
-              
+              {/*               
               <Link to="/car/1">
                 <Button className="bg-red-600 hover:bg-red-700 text-white px-6 py-3">
                   Enter Now - $25
                 </Button>
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>
@@ -211,7 +211,7 @@ const Index = () => {
             <span className="bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent"> Dream Car</span>
           </h2>
           <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
-            Enter our exclusive car raffles for a chance to win luxury supercars, sports cars, and dream vehicles. 
+            Enter our exclusive car raffles for a chance to win luxury supercars, sports cars, and dream vehicles.
             Your next ride could be just one ticket away.
           </p>
           <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg">
@@ -224,10 +224,10 @@ const Index = () => {
       <section id="raffles" className="py-16 px-4">
         <div className="container mx-auto">
           <h3 className="text-4xl font-bold text-white mb-8 text-center">Active Raffles</h3>
-          
+
           {/* Filters as dropdowns */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 max-w-4xl mx-auto">
-            <Select value={filters.carType} onValueChange={(value) => setFilters({...filters, carType: value})}>
+            <Select value={filters.carType} onValueChange={(value) => setFilters({ ...filters, carType: value })}>
               <SelectTrigger className="bg-slate-800/40 border-slate-700/50 text-white">
                 <SelectValue placeholder="Car Type" />
               </SelectTrigger>
@@ -239,7 +239,7 @@ const Index = () => {
               </SelectContent>
             </Select>
 
-            <Select value={filters.brand} onValueChange={(value) => setFilters({...filters, brand: value})}>
+            <Select value={filters.brand} onValueChange={(value) => setFilters({ ...filters, brand: value })}>
               <SelectTrigger className="bg-slate-800/40 border-slate-700/50 text-white">
                 <SelectValue placeholder="Brand" />
               </SelectTrigger>
@@ -256,7 +256,7 @@ const Index = () => {
               </SelectContent>
             </Select>
 
-            <Select value={filters.priceRange} onValueChange={(value) => setFilters({...filters, priceRange: value})}>
+            <Select value={filters.priceRange} onValueChange={(value) => setFilters({ ...filters, priceRange: value })}>
               <SelectTrigger className="bg-slate-800/40 border-slate-700/50 text-white">
                 <SelectValue placeholder="Price Range" />
               </SelectTrigger>
@@ -269,7 +269,7 @@ const Index = () => {
               </SelectContent>
             </Select>
 
-            <Select value={filters.status} onValueChange={(value) => setFilters({...filters, status: value})}>
+            <Select value={filters.status} onValueChange={(value) => setFilters({ ...filters, status: value })}>
               <SelectTrigger className="bg-slate-800/40 border-slate-700/50 text-white">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
@@ -280,32 +280,31 @@ const Index = () => {
               </SelectContent>
             </Select>
           </div>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {filteredCars.map((car) => (
               <Card key={car.id} className="bg-slate-800/40 backdrop-blur-sm border-slate-700/50 overflow-hidden group hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20">
                 <div className="relative">
-                  <img 
-                    src={car.image} 
+                  <img
+                    src={car.image}
                     alt={car.name}
                     className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-300"
                   />
-                  <Badge 
-                    className={`absolute top-2 right-2 text-xs ${
-                      car.status === 'ending-soon' ? 'bg-red-600' : 'bg-green-600'
-                    }`}
+                  <Badge
+                    className={`absolute top-2 right-2 text-xs ${car.status === 'ending-soon' ? 'bg-red-600' : 'bg-green-600'
+                      }`}
                   >
                     {car.status === 'ending-soon' ? 'Ending Soon' : 'Active'}
                   </Badge>
                 </div>
-                
+
                 <CardHeader className="p-3">
                   <CardTitle className="text-white text-sm leading-tight">{car.name}</CardTitle>
                   <CardDescription className="text-blue-400 text-sm font-semibold">
                     {car.value}
                   </CardDescription>
                 </CardHeader>
-                
+
                 <CardContent className="p-3 pt-0 space-y-3">
                   <div className="grid grid-cols-4 gap-1">
                     <div className="bg-slate-800/50 rounded p-1 text-center">
@@ -325,7 +324,7 @@ const Index = () => {
                       <div className="text-[10px] text-slate-300">Seconds</div>
                     </div>
                   </div>
-                  
+
                   <div className="flex justify-between text-white/80 text-xs">
                     <span className="flex items-center">
                       <Users className="w-3 h-3 mr-1" />
@@ -333,14 +332,14 @@ const Index = () => {
                     </span>
                     <span>{car.ticketPrice}</span>
                   </div>
-                  
+
                   <div className="w-full bg-slate-700 rounded-full h-1">
-                    <div 
+                    <div
                       className="bg-gradient-to-r from-blue-500 to-purple-500 h-1 rounded-full transition-all duration-300"
                       style={{ width: `${(car.entries / car.totalTickets) * 100}%` }}
                     ></div>
                   </div>
-                  
+
                   <Link to={`/car/${car.id}`}>
                     <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs">
                       View Details
@@ -354,7 +353,7 @@ const Index = () => {
           {filteredCars.length === 0 && (
             <div className="text-center py-12">
               <p className="text-white/60 text-lg">No cars match your current filters.</p>
-              <Button 
+              <Button
                 onClick={() => setFilters({ carType: 'all', priceRange: 'all', brand: 'all', status: 'all' })}
                 variant="outline"
                 className="mt-4 text-white border-white/20"
@@ -377,13 +376,13 @@ const Index = () => {
               </Button>
             </Link>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {recentWinners.map((winner, index) => (
               <Card key={index} className="bg-slate-800/40 backdrop-blur-sm border-slate-700/50 overflow-hidden group hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-yellow-500/20">
                 <div className="relative">
-                  <img 
-                    src={winner.image} 
+                  <img
+                    src={winner.image}
                     alt={winner.car}
                     className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-300"
                   />
@@ -391,24 +390,24 @@ const Index = () => {
                     🏆 Winner
                   </Badge>
                 </div>
-                
+
                 <CardHeader className="p-3">
                   <CardTitle className="text-white text-sm leading-tight">{winner.name}</CardTitle>
                   <CardDescription className="text-yellow-400 text-sm font-semibold">
                     Won: {winner.car}
                   </CardDescription>
                 </CardHeader>
-                
+
                 <CardContent className="p-3 pt-0 space-y-2">
                   <div className="flex justify-between text-white text-xs font-medium">
                     <span>{winner.location}</span>
                     <span>{winner.date}</span>
                   </div>
-                  
+
                   <div className="w-full bg-yellow-500/20 rounded-full h-1">
                     <div className="bg-gradient-to-r from-yellow-500 to-orange-500 h-1 rounded-full w-full"></div>
                   </div>
-                  
+
                   <div className="text-center">
                     <span className="text-yellow-400 text-xs font-medium">🎉 Congratulations!</span>
                   </div>
@@ -423,7 +422,7 @@ const Index = () => {
       <section id="how-it-works" className="py-16 px-4">
         <div className="container mx-auto">
           <h3 className="text-4xl font-bold text-white text-center mb-12">How It Works</h3>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -432,7 +431,7 @@ const Index = () => {
               <h4 className="text-xl font-bold text-white mb-2">Choose Your Car</h4>
               <p className="text-white/80">Browse our selection of luxury vehicles and pick your dream car to enter.</p>
             </div>
-            
+
             <div className="text-center">
               <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-white">2</span>
@@ -440,7 +439,7 @@ const Index = () => {
               <h4 className="text-xl font-bold text-white mb-2">Buy Tickets</h4>
               <p className="text-white/80">Purchase raffle tickets to increase your chances of winning. More tickets = better odds!</p>
             </div>
-            
+
             <div className="text-center">
               <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-white">3</span>
