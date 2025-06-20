@@ -142,7 +142,7 @@ const Winners = () => {
             <ScrollArea className="h-[500px] pr-4">
               <div className="space-y-6">
                 {currentWinners.map((winner, index) => (
-                  <Card key={winner.id} className="bg-gradient-to-r from-slate-800/60 via-blue-900/20 to-purple-900/20 border-yellow-500/30 backdrop-blur-sm overflow-hidden hover:shadow-xl hover:shadow-yellow-500/20 transition-all duration-300 hover:scale-[1.02]">
+                  <Card key={winner.id} className="bg-slate-800/40 backdrop-blur-sm border-slate-700/50 overflow-hidden hover:shadow-xl hover:shadow-blue-500/20 transition-all duration-300 hover:scale-[1.02]">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       <div className="relative">
                         <img 
@@ -165,27 +165,27 @@ const Winners = () => {
                       <div className="md:col-span-2 p-6">
                         <div className="flex items-start justify-between mb-4">
                           <div>
-                            <h4 className="text-2xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-1">{winner.name}</h4>
+                            <h4 className="text-2xl font-bold text-white mb-1">{winner.name}</h4>
                             <p className="text-blue-400 text-lg font-semibold">{winner.car}</p>
                           </div>
                           <div className="text-right">
                             <div className="text-yellow-400 text-sm font-medium">WINNER</div>
-                            <div className="text-white/60 text-xs">{winner.date}</div>
+                            <div className="text-white text-xs">{winner.date}</div>
                           </div>
                         </div>
                         
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                          <div className="flex items-center text-white/80 bg-slate-800/40 rounded-lg p-3">
+                          <div className="flex items-center text-white bg-slate-800/40 rounded-lg p-3">
                             <MapPin className="w-4 h-4 mr-2 text-blue-400" />
                             {winner.location}
                           </div>
-                          <div className="flex items-center text-white/80 bg-slate-800/40 rounded-lg p-3">
+                          <div className="flex items-center text-white bg-slate-800/40 rounded-lg p-3">
                             <Calendar className="w-4 h-4 mr-2 text-green-400" />
                             {winner.date}
                           </div>
                         </div>
                         
-                        <div className="bg-gradient-to-r from-slate-800/60 to-slate-700/60 rounded-lg p-4 border border-yellow-500/20">
+                        <div className="bg-slate-800/60 rounded-lg p-4 border border-yellow-500/20">
                           <div className="grid grid-cols-2 gap-4 text-sm">
                             <div>
                               <span className="text-white/60">Winning Ticket:</span>

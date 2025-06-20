@@ -13,7 +13,6 @@ import {
   List
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -90,13 +89,9 @@ const AdminLayout = () => {
 
         {sidebarOpen && (
           <div className="absolute bottom-4 left-4 right-4">
-            <Card className="p-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-              <p className="text-sm font-medium">RaffleCars Admin</p>
-              <p className="text-xs opacity-80">Manage your car raffles</p>
-              <Link to="/" className="text-xs underline mt-2 block">
-                View Website →
-              </Link>
-            </Card>
+            <Link to="/" className="text-sm text-blue-600 underline">
+              View Website →
+            </Link>
           </div>
         )}
       </div>

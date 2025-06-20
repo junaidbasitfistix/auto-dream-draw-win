@@ -18,13 +18,13 @@ const Header = () => {
         </nav>
         <div className="flex items-center space-x-4">
           <Link to="/cart">
-            <Button variant="outline" size="sm" className="text-blue-400 border-blue-400/40 bg-blue-400/10 hover:bg-blue-400/20 hover:text-blue-300 hover:border-blue-300/60 transition-all">
+            <Button variant="outline" size="sm" className="text-blue-400 border-blue-400/40 bg-blue-400/10 hover:bg-blue-400/20 hover:text-blue-400 hover:border-blue-400/60 transition-all">
               <ShoppingCart className="w-4 h-4 mr-2" />
               Cart
             </Button>
           </Link>
           <Link to="/profile">
-            <Button variant="outline" size="sm" className="text-purple-400 border-purple-400/40 bg-purple-400/10 hover:bg-purple-400/20 hover:text-purple-300 hover:border-purple-300/60 transition-all">
+            <Button variant="outline" size="sm" className="text-purple-400 border-purple-400/40 bg-purple-400/10 hover:bg-purple-400/20 hover:text-purple-400 hover:border-purple-400/60 transition-all">
               Profile
             </Button>
           </Link>
