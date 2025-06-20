@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Car, Clock, Trophy, Users, Star, ShoppingCart } from 'lucide-react';
@@ -163,38 +164,37 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <Header />
 
-      {/* Timer Section Above Hero */}
-      <section className="py-6 px-4 bg-gradient-to-r from-red-900/30 to-orange-900/30 border-b border-red-500/20">
+      {/* Small Timer Section Above Hero */}
+      <section className="py-3 px-4 bg-gradient-to-r from-red-900/20 to-orange-900/20 border-b border-red-500/10">
         <div className="container mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between max-w-4xl mx-auto">
-            <div className="text-center md:text-left mb-4 md:mb-0">
-              <Badge className="bg-red-600 text-white mb-2">Ending Soon</Badge>
-              <h3 className="text-xl font-bold text-white">2024 Lamborghini Huracán</h3>
-              <p className="text-white/80 text-sm">Last chance to enter!</p>
+          <div className="flex flex-col md:flex-row items-center justify-center max-w-2xl mx-auto text-center">
+            <div className="mb-2 md:mb-0 md:mr-6">
+              <Badge className="bg-red-600 text-white mb-1 text-xs">Ending Soon</Badge>
+              <h3 className="text-sm font-bold text-white">2024 Lamborghini Huracán</h3>
             </div>
             
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
               <div className="grid grid-cols-4 gap-1">
-                <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-2 text-center border border-slate-700/50 min-w-[50px]">
-                  <div className="text-sm font-bold text-white">5</div>
-                  <div className="text-xs text-slate-300">Days</div>
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded p-1 text-center border border-slate-700/50 min-w-[35px]">
+                  <div className="text-xs font-bold text-white">5</div>
+                  <div className="text-[10px] text-slate-300">Days</div>
                 </div>
-                <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-2 text-center border border-slate-700/50 min-w-[50px]">
-                  <div className="text-sm font-bold text-white">12</div>
-                  <div className="text-xs text-slate-300">Hours</div>
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded p-1 text-center border border-slate-700/50 min-w-[35px]">
+                  <div className="text-xs font-bold text-white">12</div>
+                  <div className="text-[10px] text-slate-300">Hours</div>
                 </div>
-                <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-2 text-center border border-slate-700/50 min-w-[50px]">
-                  <div className="text-sm font-bold text-white">45</div>
-                  <div className="text-xs text-slate-300">Min</div>
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded p-1 text-center border border-slate-700/50 min-w-[35px]">
+                  <div className="text-xs font-bold text-white">45</div>
+                  <div className="text-[10px] text-slate-300">Min</div>
                 </div>
-                <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-2 text-center border border-slate-700/50 min-w-[50px]">
-                  <div className="text-sm font-bold text-white">23</div>
-                  <div className="text-xs text-slate-300">Sec</div>
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded p-1 text-center border border-slate-700/50 min-w-[35px]">
+                  <div className="text-xs font-bold text-white">23</div>
+                  <div className="text-[10px] text-slate-300">Sec</div>
                 </div>
               </div>
               
               <Link to="/car/1">
-                <Button className="bg-red-600 hover:bg-red-700 text-white px-6">
+                <Button size="sm" className="bg-red-600 hover:bg-red-700 text-white px-4 text-xs">
                   Enter Now - $25
                 </Button>
               </Link>
@@ -400,7 +400,7 @@ const Index = () => {
                 </CardHeader>
                 
                 <CardContent className="p-3 pt-0 space-y-2">
-                  <div className="flex justify-between text-white/80 text-xs">
+                  <div className="flex justify-between text-white text-xs font-medium">
                     <span>{winner.location}</span>
                     <span>{winner.date}</span>
                   </div>

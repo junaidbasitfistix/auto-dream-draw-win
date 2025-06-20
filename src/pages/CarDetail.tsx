@@ -1,6 +1,7 @@
+
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Car, Clock, Users, Star, ArrowLeft, Plus, Minus, ShoppingCart, Car as CarIcon, Gauge, Settings, Fuel, Trophy } from 'lucide-react';
+import { Car, Clock, Users, Star, ArrowLeft, Plus, Minus, ShoppingCart, Car as CarIcon, Gauge, Settings, Fuel, Trophy, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -84,6 +85,13 @@ const CarDetail = () => {
       image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
       value: "$85,000",
       ticketPrice: 10
+    },
+    {
+      id: 4,
+      name: "2024 Mercedes AMG GT",
+      image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      value: "$140,000",
+      ticketPrice: 15
     }
   ];
 
@@ -106,6 +114,15 @@ const CarDetail = () => {
       date: "Aug 2024",
       image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
       testimonial: "A dream come true! Thank you RaffleCars for this amazing opportunity."
+    },
+    {
+      id: 3,
+      name: "David K.",
+      car: "2023 Lamborghini Huracán",
+      location: "Chicago, IL",
+      date: "June 2024",
+      image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      testimonial: "Perfect condition and amazing service. Highly recommend RaffleCars!"
     }
   ];
 
@@ -174,61 +191,64 @@ const CarDetail = () => {
               <p className="text-blue-400 text-2xl font-semibold">Value: {car.value}</p>
             </div>
 
-            {/* Countdown Timer - Smaller */}
-            <Card className="bg-red-900/30 border-red-500/20">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-white flex items-center text-sm">
-                  <Clock className="w-4 h-4 mr-2" />
-                  Time Remaining
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="grid grid-cols-4 gap-2">
-                  <div className="bg-slate-800/50 rounded p-2 text-center">
-                    <div className="text-sm font-bold text-white">5</div>
-                    <div className="text-xs text-slate-300">Days</div>
+            {/* Timer and Ticket Info in same row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Countdown Timer */}
+              <Card className="bg-black/20 border-white/10">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-white flex items-center text-sm">
+                    <Clock className="w-4 h-4 mr-2" />
+                    Time Remaining
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="grid grid-cols-4 gap-1">
+                    <div className="bg-slate-800/50 rounded p-1 text-center">
+                      <div className="text-xs font-bold text-white">5</div>
+                      <div className="text-[10px] text-slate-300">Days</div>
+                    </div>
+                    <div className="bg-slate-800/50 rounded p-1 text-center">
+                      <div className="text-xs font-bold text-white">12</div>
+                      <div className="text-[10px] text-slate-300">Hours</div>
+                    </div>
+                    <div className="bg-slate-800/50 rounded p-1 text-center">
+                      <div className="text-xs font-bold text-white">45</div>
+                      <div className="text-[10px] text-slate-300">Min</div>
+                    </div>
+                    <div className="bg-slate-800/50 rounded p-1 text-center">
+                      <div className="text-xs font-bold text-white">23</div>
+                      <div className="text-[10px] text-slate-300">Sec</div>
+                    </div>
                   </div>
-                  <div className="bg-slate-800/50 rounded p-2 text-center">
-                    <div className="text-sm font-bold text-white">12</div>
-                    <div className="text-xs text-slate-300">Hours</div>
-                  </div>
-                  <div className="bg-slate-800/50 rounded p-2 text-center">
-                    <div className="text-sm font-bold text-white">45</div>
-                    <div className="text-xs text-slate-300">Minutes</div>
-                  </div>
-                  <div className="bg-slate-800/50 rounded p-2 text-center">
-                    <div className="text-sm font-bold text-white">23</div>
-                    <div className="text-xs text-slate-300">Seconds</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            {/* Entry Statistics - Smaller */}
-            <Card className="bg-black/20 border-white/10">
-              <CardContent className="pt-4 pb-4">
-                <div className="flex justify-between text-white/80 mb-3 text-sm">
-                  <span className="flex items-center">
-                    <Users className="w-4 h-4 mr-1" />
-                    {car.entries.toLocaleString()} entries
-                  </span>
-                  <span>${car.ticketPrice}/ticket</span>
-                </div>
-                
-                <div className="w-full bg-gray-700 rounded-full h-2 mb-3">
-                  <div 
-                    className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full"
-                    style={{ width: `${(car.entries / car.totalTickets) * 100}%` }}
-                  ></div>
-                </div>
-                
-                <p className="text-white/60 text-xs">
-                  {car.totalTickets - car.entries} tickets remaining
-                </p>
-              </CardContent>
-            </Card>
+              {/* Entry Statistics */}
+              <Card className="bg-black/20 border-white/10">
+                <CardContent className="pt-4 pb-4">
+                  <div className="flex justify-between text-white/80 mb-2 text-sm">
+                    <span className="flex items-center">
+                      <Users className="w-4 h-4 mr-1" />
+                      {car.entries.toLocaleString()} entries
+                    </span>
+                    <span>${car.ticketPrice}/ticket</span>
+                  </div>
+                  
+                  <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
+                    <div 
+                      className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full"
+                      style={{ width: `${(car.entries / car.totalTickets) * 100}%` }}
+                    ></div>
+                  </div>
+                  
+                  <p className="text-white/60 text-xs">
+                    {car.totalTickets - car.entries} tickets remaining
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
 
-            {/* Ticket Selection - Smaller */}
+            {/* Ticket Selection */}
             <Card className="bg-black/20 border-white/10">
               <CardHeader className="pb-3">
                 <CardTitle className="text-white text-sm">Select Tickets</CardTitle>
@@ -275,7 +295,6 @@ const CarDetail = () => {
 
         {/* Detailed Information Tabs */}
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Description */}
           <Card className="bg-black/20 border-white/10">
             <CardHeader>
               <CardTitle className="text-white">Description</CardTitle>
@@ -285,7 +304,6 @@ const CarDetail = () => {
             </CardContent>
           </Card>
 
-          {/* Features */}
           <Card className="bg-black/20 border-white/10">
             <CardHeader>
               <CardTitle className="text-white">Features</CardTitle>
@@ -302,7 +320,6 @@ const CarDetail = () => {
             </CardContent>
           </Card>
 
-          {/* Safety */}
           <Card className="bg-black/20 border-white/10">
             <CardHeader>
               <CardTitle className="text-white">Safety Features</CardTitle>
@@ -410,13 +427,13 @@ const CarDetail = () => {
           </Card>
         </div>
 
-        {/* Car Winners Section - Fancy and Beautiful */}
+        {/* Previous Winners - 3 in a row */}
         <div className="mt-12">
           <h3 className="text-3xl font-bold text-white mb-8 flex items-center">
             <Trophy className="w-8 h-8 mr-3 text-yellow-400" />
             Previous Winners of This Car Model
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {carWinners.map((winner) => (
               <Card key={winner.id} className="bg-gradient-to-br from-yellow-600/10 via-orange-600/10 to-red-600/10 border border-yellow-500/30 backdrop-blur-sm hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-yellow-500/20 overflow-hidden">
                 <div className="relative">
@@ -434,16 +451,16 @@ const CarDetail = () => {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <h4 className="text-xl font-bold bg-gradient-to-r from-white to-yellow-200 bg-clip-text text-transparent">{winner.name}</h4>
-                      <p className="text-yellow-400 font-semibold">{winner.car}</p>
+                      <h4 className="text-xl font-bold text-white">{winner.name}</h4>
+                      <p className="text-yellow-400 font-semibold text-sm">{winner.car}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-white/70 text-sm">{winner.location}</p>
-                      <p className="text-white/60 text-xs">{winner.date}</p>
+                      <p className="text-white text-sm">{winner.location}</p>
+                      <p className="text-white/80 text-xs">{winner.date}</p>
                     </div>
                   </div>
                   <div className="bg-slate-800/40 rounded-lg p-4 border border-yellow-500/20">
-                    <p className="text-white/80 italic text-sm">"{winner.testimonial}"</p>
+                    <p className="text-white italic text-sm">"{winner.testimonial}"</p>
                   </div>
                   <div className="mt-4 flex justify-center">
                     <div className="px-4 py-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-full">
@@ -456,36 +473,38 @@ const CarDetail = () => {
           </div>
         </div>
 
-        {/* Similar Cars */}
+        {/* Similar Cars - 3 in a row with horizontal scroll */}
         <div className="mt-12">
           <h3 className="text-3xl font-bold text-white mb-8">Similar Cars</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {similarCars.map((similarCar) => (
-              <Link key={similarCar.id} to={`/car/${similarCar.id}`}>
-                <Card className="bg-black/20 border-white/10 overflow-hidden group hover:scale-105 transition-transform duration-300">
-                  <div className="relative">
-                    <img 
-                      src={similarCar.image} 
-                      alt={similarCar.name}
-                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
-                  </div>
-                  
-                  <CardHeader>
-                    <CardTitle className="text-white">{similarCar.name}</CardTitle>
-                    <CardDescription className="text-blue-400 text-lg font-semibold">
-                      Value: {similarCar.value}
-                    </CardDescription>
-                  </CardHeader>
-                  
-                  <CardContent>
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                      View Details - ${similarCar.ticketPrice}/ticket
-                    </Button>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
+          <div className="relative">
+            <div className="flex overflow-x-auto space-x-6 pb-4 scrollbar-hide">
+              {similarCars.map((similarCar) => (
+                <Link key={similarCar.id} to={`/car/${similarCar.id}`} className="flex-shrink-0 w-80">
+                  <Card className="bg-black/20 border-white/10 overflow-hidden group hover:scale-105 transition-transform duration-300 w-full">
+                    <div className="relative">
+                      <img 
+                        src={similarCar.image} 
+                        alt={similarCar.name}
+                        className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                    
+                    <CardHeader>
+                      <CardTitle className="text-white text-lg">{similarCar.name}</CardTitle>
+                      <CardDescription className="text-blue-400 text-lg font-semibold">
+                        Value: {similarCar.value}
+                      </CardDescription>
+                    </CardHeader>
+                    
+                    <CardContent>
+                      <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                        View Details - ${similarCar.ticketPrice}/ticket
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </div>

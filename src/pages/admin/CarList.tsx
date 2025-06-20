@@ -1,247 +1,352 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Car, Edit, Trash2, Plus, Search, Filter } from 'lucide-react';
+import { Plus, Car, DollarSign, Calendar, Eye, Edit, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const CarList = () => {
-  const [cars, setCars] = useState([
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [newCar, setNewCar] = useState({
+    name: '',
+    brand: '',
+    model: '',
+    year: '',
+    value: '',
+    description: '',
+    engine: '',
+    horsepower: '',
+    transmission: '',
+    fuelType: '',
+    color: '',
+    images: []
+  });
+
+  // Mock cars data
+  const cars = [
     {
       id: 1,
-      make: 'BMW',
+      name: 'BMW M3 Competition',
+      brand: 'BMW',
       model: 'M3',
       year: 2023,
-      price: 75000,
-      status: 'Available',
+      value: 85000,
       image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-      mileage: 15000,
-      color: 'Alpine White'
+      status: 'Available',
+      addedDate: '2024-01-15'
     },
     {
       id: 2,
-      make: 'Mercedes',
-      model: 'C-Class',
+      name: 'Ferrari F8 Tributo',
+      brand: 'Ferrari',
+      model: 'F8 Tributo',
       year: 2023,
-      price: 65000,
+      value: 280000,
+      image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
       status: 'In Raffle',
-      image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-      mileage: 12000,
-      color: 'Obsidian Black'
+      addedDate: '2024-01-10'
     },
     {
       id: 3,
-      make: 'Audi',
-      model: 'R8',
+      name: 'Porsche 911 Turbo S',
+      brand: 'Porsche',
+      model: '911 Turbo S',
       year: 2024,
-      price: 180000,
-      status: 'Available',
-      image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-      mileage: 5000,
-      color: 'Suzuka Grey'
+      value: 220000,
+      image: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+      status: 'Won',
+      addedDate: '2024-01-05'
     }
-  ]);
-  
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  ];
 
-  const filteredCars = cars.filter(car => {
-    const matchesSearch = car.make.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         car.model.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || car.status.toLowerCase() === statusFilter.toLowerCase();
-    return matchesSearch && matchesStatus;
-  });
+  const totalCars = cars.length;
+  const availableCars = cars.filter(c => c.status === 'Available').length;
+  const totalValue = cars.reduce((sum, c) => sum + c.value, 0);
 
-  const totalPages = Math.ceil(filteredCars.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedCars = filteredCars.slice(startIndex, startIndex + itemsPerPage);
-
-  const deleteCar = (id: number) => {
-    setCars(cars.filter(car => car.id !== id));
+  const handleAddCar = () => {
+    console.log('Adding new car:', newCar);
+    setIsAddDialogOpen(false);
+    setNewCar({
+      name: '',
+      brand: '',
+      model: '',
+      year: '',
+      value: '',
+      description: '',
+      engine: '',
+      horsepower: '',
+      transmission: '',
+      fuelType: '',
+      color: '',
+      images: []
+    });
   };
 
   return (
-    <div className="p-8">
-      {/* Header */}
+    <div className="p-8 w-full">
       <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Car Management</h1>
-          <p className="text-gray-600">Manage your car inventory and listings</p>
-        </div>
-        <Link to="/admin/cars/new">
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Add New Car
-          </Button>
-        </Link>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <CardTitle className="flex items-center">
-              <Car className="h-5 w-5 mr-2" />
-              Car Inventory ({filteredCars.length})
-            </CardTitle>
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+        <h1 className="text-3xl font-bold text-gray-900">Car Management</h1>
+        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+          <DialogTrigger asChild>
+            <Button className="bg-blue-600 hover:bg-blue-700">
+              <Plus className="h-4 w-4 mr-2" />
+              Add New Car
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-md max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Add New Car</DialogTitle>
+              <DialogDescription>
+                Add a new car to the inventory
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="name">Car Name</Label>
                 <Input
-                  placeholder="Search cars..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 w-full sm:w-64"
+                  id="name"
+                  value={newCar.name}
+                  onChange={(e) => setNewCar({...newCar, name: e.target.value})}
+                  placeholder="2024 BMW M3 Competition"
                 />
               </div>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-full sm:w-40">
-                  <Filter className="h-4 w-4 mr-2" />
-                  <SelectValue placeholder="Filter by status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="available">Available</SelectItem>
-                  <SelectItem value="in raffle">In Raffle</SelectItem>
-                  <SelectItem value="sold">Sold</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="brand">Brand</Label>
+                  <Select value={newCar.brand} onValueChange={(value) => setNewCar({...newCar, brand: value})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select brand" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="BMW">BMW</SelectItem>
+                      <SelectItem value="Ferrari">Ferrari</SelectItem>
+                      <SelectItem value="Porsche">Porsche</SelectItem>
+                      <SelectItem value="Lamborghini">Lamborghini</SelectItem>
+                      <SelectItem value="McLaren">McLaren</SelectItem>
+                      <SelectItem value="Mercedes">Mercedes</SelectItem>
+                      <SelectItem value="Audi">Audi</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="model">Model</Label>
+                  <Input
+                    id="model"
+                    value={newCar.model}
+                    onChange={(e) => setNewCar({...newCar, model: e.target.value})}
+                    placeholder="M3 Competition"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="year">Year</Label>
+                  <Input
+                    id="year"
+                    type="number"
+                    value={newCar.year}
+                    onChange={(e) => setNewCar({...newCar, year: e.target.value})}
+                    placeholder="2024"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="value">Value ($)</Label>
+                  <Input
+                    id="value"
+                    type="number"
+                    value={newCar.value}
+                    onChange={(e) => setNewCar({...newCar, value: e.target.value})}
+                    placeholder="85000"
+                  />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  id="description"
+                  value={newCar.description}
+                  onChange={(e) => setNewCar({...newCar, description: e.target.value})}
+                  placeholder="Enter car description"
+                  rows={3}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="engine">Engine</Label>
+                  <Input
+                    id="engine"
+                    value={newCar.engine}
+                    onChange={(e) => setNewCar({...newCar, engine: e.target.value})}
+                    placeholder="3.0L Twin-Turbo I6"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="horsepower">Horsepower</Label>
+                  <Input
+                    id="horsepower"
+                    value={newCar.horsepower}
+                    onChange={(e) => setNewCar({...newCar, horsepower: e.target.value})}
+                    placeholder="503 HP"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="transmission">Transmission</Label>
+                  <Select value={newCar.transmission} onValueChange={(value) => setNewCar({...newCar, transmission: value})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select transmission" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Manual">Manual</SelectItem>
+                      <SelectItem value="Automatic">Automatic</SelectItem>
+                      <SelectItem value="CVT">CVT</SelectItem>
+                      <SelectItem value="Dual-Clutch">Dual-Clutch</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="fuelType">Fuel Type</Label>
+                  <Select value={newCar.fuelType} onValueChange={(value) => setNewCar({...newCar, fuelType: value})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select fuel type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Gasoline">Gasoline</SelectItem>
+                      <SelectItem value="Premium Gasoline">Premium Gasoline</SelectItem>
+                      <SelectItem value="Diesel">Diesel</SelectItem>
+                      <SelectItem value="Electric">Electric</SelectItem>
+                      <SelectItem value="Hybrid">Hybrid</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="color">Color</Label>
+                <Input
+                  id="color"
+                  value={newCar.color}
+                  onChange={(e) => setNewCar({...newCar, color: e.target.value})}
+                  placeholder="Alpine White"
+                />
+              </div>
             </div>
-          </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleAddCar}>
+                Add Car
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      {/* Statistics Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Cars</CardTitle>
+            <Car className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{totalCars}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Available Cars</CardTitle>
+            <Calendar className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{availableCars}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Value</CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">${totalValue.toLocaleString()}</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Cars Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle>All Cars</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Image</TableHead>
-                  <TableHead>Make & Model</TableHead>
-                  <TableHead>Year</TableHead>
-                  <TableHead>Price</TableHead>
-                  <TableHead>Mileage</TableHead>
-                  <TableHead>Color</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Actions</TableHead>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Image</TableHead>
+                <TableHead>Car Name</TableHead>
+                <TableHead>Brand</TableHead>
+                <TableHead>Year</TableHead>
+                <TableHead>Value</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Added Date</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {cars.map((car) => (
+                <TableRow key={car.id}>
+                  <TableCell>
+                    <img 
+                      src={car.image} 
+                      alt={car.name}
+                      className="w-16 h-12 object-cover rounded"
+                    />
+                  </TableCell>
+                  <TableCell className="font-medium">{car.name}</TableCell>
+                  <TableCell>{car.brand}</TableCell>
+                  <TableCell>{car.year}</TableCell>
+                  <TableCell>${car.value.toLocaleString()}</TableCell>
+                  <TableCell>
+                    <Badge 
+                      className={
+                        car.status === 'Available' ? 'bg-green-100 text-green-800' : 
+                        car.status === 'In Raffle' ? 'bg-blue-100 text-blue-800' : 
+                        'bg-gray-100 text-gray-800'
+                      }
+                    >
+                      {car.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>{new Date(car.addedDate).toLocaleDateString()}</TableCell>
+                  <TableCell>
+                    <div className="flex space-x-2">
+                      <Button variant="outline" size="sm">
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <Link to={`/admin/cars/edit/${car.id}`}>
+                        <Button variant="outline" size="sm">
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </Link>
+                      <Button variant="outline" size="sm" className="text-red-600 hover:text-red-800">
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {paginatedCars.map((car) => (
-                  <TableRow key={car.id}>
-                    <TableCell>
-                      <img
-                        src={car.image}
-                        alt={`${car.make} ${car.model}`}
-                        className="w-16 h-12 object-cover rounded"
-                      />
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {car.make} {car.model}
-                    </TableCell>
-                    <TableCell>{car.year}</TableCell>
-                    <TableCell>${car.price.toLocaleString()}</TableCell>
-                    <TableCell>{car.mileage.toLocaleString()} miles</TableCell>
-                    <TableCell>{car.color}</TableCell>
-                    <TableCell>
-                      <span className={`px-2 py-1 rounded-full text-xs ${
-                        car.status === 'Available' 
-                          ? 'bg-green-100 text-green-800' 
-                          : car.status === 'In Raffle'
-                          ? 'bg-blue-100 text-blue-800'
-                          : 'bg-gray-100 text-gray-800'
-                      }`}>
-                        {car.status}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex space-x-2">
-                        <Link to={`/admin/cars/edit/${car.id}`}>
-                          <Button variant="outline" size="sm">
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                        </Link>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-800">
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Delete Car</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Are you sure you want to delete {car.make} {car.model}? This action cannot be undone.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                onClick={() => deleteCar(car.id)}
-                                className="bg-red-600 hover:bg-red-700"
-                              >
-                                Delete
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="mt-6">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious 
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (currentPage > 1) setCurrentPage(currentPage - 1);
-                      }}
-                      className={currentPage <= 1 ? 'pointer-events-none opacity-50' : ''}
-                    />
-                  </PaginationItem>
-                  
-                  {[...Array(totalPages)].map((_, index) => (
-                    <PaginationItem key={index}>
-                      <PaginationLink
-                        href="#"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setCurrentPage(index + 1);
-                        }}
-                        isActive={currentPage === index + 1}
-                      >
-                        {index + 1}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ))}
-
-                  <PaginationItem>
-                    <PaginationNext 
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-                      }}
-                      className={currentPage >= totalPages ? 'pointer-events-none opacity-50' : ''}
-                    />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          )}
+              ))}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
     </div>
